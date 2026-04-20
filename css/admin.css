@@ -1645,3 +1645,53 @@ input[type="range"]::-webkit-slider-thumb {
     background: rgba(231,76,60,0.28);
     transform: scale(1.08);
 }
+
+/* =============================================
+   ADMIN — EXTRA MOBILE FIXES
+   ============================================= */
+
+/* Scrollable tables on all screen sizes */
+.events-table-wrap,
+.members-table-wrap,
+.regs-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 10px;
+}
+
+@media (max-width: 600px) {
+    .dash-header { padding: 10px 12px; gap: 8px; }
+    .dash-brand h2 { font-size: 11px; letter-spacing: 1.5px; }
+    .dash-brand p  { font-size: 9px; }
+    .dash-tabs { padding: 0 8px; gap: 2px; }
+    .dash-tab  { padding: 12px 10px; font-size: 9px; letter-spacing: 0.8px; }
+    .dash-content { padding: 14px 10px; }
+    .panel-card   { padding: 16px 12px; }
+
+    /* Form fields full width */
+    .form-group { grid-column: 1 / -1 !important; }
+    .form-grid  { grid-template-columns: 1fr !important; gap: 14px; }
+
+    /* Stats */
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat-card  { padding: 16px 12px; }
+
+    /* Action buttons stacked */
+    .table-actions { flex-direction: column; gap: 6px; }
+    .table-actions button { width: 100%; }
+
+    /* Login card */
+    .login-card { padding: 30px 18px; margin: 16px; }
+}
+
+@media (max-width: 380px) {
+    .dash-tab { padding: 10px 8px; font-size: 8px; }
+    .stats-grid { grid-template-columns: 1fr; }
+}
+
+/* Touch-friendly buttons */
+@media (hover: none) and (pointer: coarse) {
+    .btn-primary, .btn-secondary, .btn-danger { min-height: 44px; }
+    .dash-tab { min-height: 44px; }
+    .table-actions button { min-height: 38px; min-width: 38px; }
+}
