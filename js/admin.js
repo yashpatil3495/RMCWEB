@@ -365,8 +365,8 @@ async function saveEvent(e) {
     let posterUrl = document.getElementById('evPoster').value.trim();
     if (_pendingEventPosterFile) {
         try {
-            showToast('Uploading poster…', 'success');
-            posterUrl = await uploadEventPosterToStorage(_pendingEventPosterFile, eventId);
+            showToast('Processing poster…', 'success');
+            posterUrl = await uploadEventPosterToStorage(_pendingEventPosterFile);
             _pendingEventPosterFile = null;
         } catch (err) {
             // Don't block event save if only poster upload fails
@@ -2423,19 +2423,35 @@ function showExistingPosterPreview(url) {
     document.getElementById('evPoster').value = url;
 }
 
-async function uploadEventPosterToStorage(file, eventId) {
-    const storage  = window._firebaseStorage;
-    const sRef     = window._firebaseStorageRef;
-    const upload   = window._firebaseUploadBytes;
-    const getDL    = window._firebaseGetDownloadURL;
-    if (!storage || !sRef || !upload || !getDL) {
-        throw new Error('Firebase Storage is not initialised yet.');
-    }
-    const ext      = file.name.split('.').pop();
-    const path     = `event-posters/${eventId}.${ext}`;
-    const fileRef  = sRef(storage, path);
-    await upload(fileRef, file);
-    return await getDL(fileRef);
+// Compress image to base64 — max 900px wide, quality 0.75
+function compressImageToBase64(file, maxWidth = 900, quality = 0.75) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onerror = reject;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let w = img.width, h = img.height;
+                if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
+                canvas.width = w;
+                canvas.height = h;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, w, h);
+                resolve(canvas.toDataURL('image/jpeg', quality));
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+// No longer uses Firebase Storage — stores compressed base64 in DB directly
+// Works for ALL admin types (super and representative)
+async function uploadEventPosterToStorage(file) {
+    const base64 = await compressImageToBase64(file);
+    return base64;
 }
 
 // Drag-and-drop for the event poster drop zone
