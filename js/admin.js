@@ -369,8 +369,10 @@ async function saveEvent(e) {
             posterUrl = await uploadEventPosterToStorage(_pendingEventPosterFile, eventId);
             _pendingEventPosterFile = null;
         } catch (err) {
-            showToast('Poster upload failed: ' + err.message, 'error');
-            return;
+            // Don't block event save if only poster upload fails
+            showToast('⚠️ Poster upload failed (' + err.message + '). Saving event without poster.', 'error');
+            _pendingEventPosterFile = null;
+            posterUrl = '';
         }
     }
 
@@ -391,23 +393,29 @@ async function saveEvent(e) {
         createdAt: new Date().toISOString()
     };
 
-    const events = await getEvents();
+    try {
+        const events = await getEvents();
 
-    if (editId) {
-        const idx = events.findIndex(ev => ev.id === editId);
-        if (idx !== -1) {
-            eventObj.createdAt = events[idx].createdAt;
-            events[idx] = eventObj;
+        if (editId) {
+            const idx = events.findIndex(ev => ev.id === editId);
+            if (idx !== -1) {
+                eventObj.createdAt = events[idx].createdAt;
+                events[idx] = eventObj;
+            }
+            await setEvents(events);
+            showToast('Event updated successfully!', 'success');
+        } else {
+            events.push(eventObj);
+            await setEvents(events);
+            showToast('Event created successfully!', 'success');
         }
-        showToast('Event updated successfully!', 'success');
-    } else {
-        events.push(eventObj);
-        showToast('Event created successfully!', 'success');
-    }
 
-    await setEvents(events);
-    resetEventForm();
-    await renderEventsTable();
+        resetEventForm();
+        await renderEventsTable();
+    } catch (err) {
+        showToast('❌ Failed to save event: ' + err.message + '. Check Firebase rules & login.', 'error');
+        console.error('saveEvent error:', err);
+    }
 }
 
 async function editEvent(id) {
