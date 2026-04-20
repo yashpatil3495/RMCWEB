@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration | RSCOE Mathematics Club (RMC)</title>
+    <meta name="description" content="Register for upcoming events and workshops by the RSCOE Mathematics Club, JSPM Pune.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://rmcwebsite10.web.app/ragister.html">
+    <link rel="icon" type="image/png" href="img/logo.png">
+    <link rel="apple-touch-icon" href="img/logo.png">
+    <link rel="stylesheet" href="css/register.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="video-bg">
+    <canvas id="mathBg"></canvas>
+</div>
+
+<section class="register-section">
+    <div class="register-card">
+        <div class="register-header">
+            <img src="img/logo.png" alt="RMC Logo" class="register-logo">
+            <h1>EVENT REGISTRATION</h1>
+            <p class="register-subtitle">RSCOE Mathematics Club</p>
+        </div>
+
+        <!-- Success State -->
+        <div class="register-success" id="successState" style="display:none;">
+            <div class="success-icon"><i class='bx bx-check-circle'></i></div>
+            <h2>Registration Submitted!</h2>
+            <p>Your registration has been received. The admin will review it and you'll receive a confirmation ticket at your email once accepted.</p>
+            <div class="success-details" id="successDetails"></div>
+
+            <div class="ticket-link-box" id="ticketLinkBox" style="display:none; margin-top:24px; padding:20px; border:1px solid rgba(192,160,96,0.3); border-radius:12px; background:rgba(192,160,96,0.06); text-align:center;">
+                <div style="font-size:36px;margin-bottom:10px;">&#127903;</div>
+                <h3 style="font-family:'Cinzel',serif;color:#c0a060;font-size:16px;margin-bottom:8px;">Your Ticket is Ready!</h3>
+                <p style="color:#888;font-size:13px;margin-bottom:14px;">Your registration has been accepted.</p>
+                <a id="ticketLink" href="#" target="_blank" class="reg-btn primary" style="display:inline-block;text-decoration:none;">View &amp; Download Ticket</a>
+            </div>
+
+            <a href="index.html" class="reg-btn">&larr; Back to Home</a>
+        </div>
+
+
+        <!-- Form -->
+        <form class="register-form" id="registrationForm" onsubmit="submitRegistration(event)">
+            <div class="form-group">
+                <label for="regEvent"><i class='bx bx-calendar-event'></i> Select Event *</label>
+                <select id="regEvent" required>
+                    <option value="">— Loading events... —</option>
+                </select>
+                <div class="event-info" id="eventInfo" style="display:none;">
+                    <span class="event-info-date" id="eventInfoDate"></span>
+                    <span class="event-info-deadline" id="eventInfoDeadline"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="regName"><i class='bx bx-user'></i> Full Name *</label>
+                    <input type="text" id="regName" required placeholder="Your full name" autocomplete="name">
+                </div>
+                <div class="form-group">
+                    <label for="regEmail"><i class='bx bx-envelope'></i> Email *</label>
+                    <input type="email" id="regEmail" required placeholder="your@email.com" autocomplete="email">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="regMobile"><i class='bx bx-phone'></i> Mobile Number *</label>
+                    <input type="tel" id="regMobile" required placeholder="10-digit mobile" pattern="[0-9]{10}" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label for="regRbt"><i class='bx bx-id-card'></i> RBT Number *</label>
+                    <input type="text" id="regRbt" required placeholder="Your RBT number">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="regDept"><i class='bx bx-building'></i> Department</label>
+                    <input type="text" id="regDept" placeholder="e.g. Computer Engineering">
+                </div>
+                <div class="form-group">
+                    <label for="regYear"><i class='bx bx-calendar'></i> Year *</label>
+                    <select id="regYear" required>
+                        <option value="">— Select —</option>
+                        <option>First Year</option>
+                        <option>Second Year</option>
+                        <option>Third Year</option>
+                        <option>Fourth Year</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="regGroupSize"><i class='bx bx-group'></i> Number of Group Members</label>
+                <input type="number" id="regGroupSize" min="1" max="10" value="1" placeholder="1">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="reg-btn primary" id="submitBtn">
+                    <i class='bx bx-send'></i> SUBMIT REGISTRATION
+                </button>
+                <a href="index.html" class="reg-btn secondary">← BACK</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Toast -->
+<div class="reg-toast" id="regToast"></div>
+
+<!-- Firebase SDK -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, set, get, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyC5JKcHWc9N7OcH57vFVxF5gBHxKfsgjSw",
+        authDomain: "rmcwebsite10.firebaseapp.com",
+        databaseURL: "https://rmcwebsite10-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "rmcwebsite10",
+        storageBucket: "rmcwebsite10.firebasestorage.app",
+        messagingSenderId: "731012572422",
+        appId: "1:731012572422:web:f1cc2692e7236f600daa87"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    window._firebaseDB = db;
+    window._firebaseRef = ref;
+    window._firebaseSet = set;
+    window._firebaseGet = get;
+    window._firebaseRemove = remove;
+    window._firebaseOnValue = onValue;
+    window._firebaseReady = true;
+    window.dispatchEvent(new Event('firebaseReady'));
+</script>
+<script src="js/firebase-db.js"></script>
+<script>
+/* =============================================
+   REGISTRATION PAGE LOGIC
+   ============================================= */
+
+let allEvents = [];
+
+function generateRegId() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+function showRegToast(msg, type) {
+    const toast = document.getElementById('regToast');
+    toast.textContent = msg;
+    toast.className = 'reg-toast ' + (type || '');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3500);
+}
+
+/* Load events into dropdown */
+async function loadEvents() {
+    const select = document.getElementById('regEvent');
+
+    const tryLoad = async () => {
+        const data = await fbGet('rmc_events');
+        if (!data) {
+            select.innerHTML = '<option value="">— No events available —</option>';
+            return;
+        }
+
+        let events = Array.isArray(data) ? data : Object.values(data);
+        allEvents = events;
+
+        const openEvents = events.filter(ev => ev.status === 'Registration Open');
+
+        if (openEvents.length === 0) {
+            select.innerHTML = '<option value="">— No open events —</option>';
+            return;
+        }
+
+        select.innerHTML = '<option value="">— Select an Event —</option>' +
+            openEvents.map(ev =>
+                `<option value="${ev.id}" 
+                    data-date="${ev.date || ''}" 
+                    data-deadline="${ev.deadline || ''}"
+                    data-name="${(ev.name || '').replace(/"/g, '&quot;')}"
+                >${ev.name}${ev.date ? ' (' + ev.date + ')' : ''}</option>`
+            ).join('');
+
+        // Check URL params for pre-selected event
+        const params = new URLSearchParams(window.location.search);
+        const preselect = params.get('event');
+        if (preselect) {
+            select.value = preselect;
+            updateEventInfo();
+        }
+    };
+
+    if (window._firebaseReady) {
+        await tryLoad();
+    } else {
+        window.addEventListener('firebaseReady', tryLoad);
+    }
+}
+
+/* Show event details when selected */
+function updateEventInfo() {
+    const select = document.getElementById('regEvent');
+    const infoDiv = document.getElementById('eventInfo');
+    const opt = select.options[select.selectedIndex];
+
+    if (!select.value || !opt) {
+        infoDiv.style.display = 'none';
+        return;
+    }
+
+    const date = opt.dataset.date;
+    const deadline = opt.dataset.deadline;
+
+    let html = '';
+    if (date) {
+        const d = new Date(date);
+        html += `<span class="event-info-date"><i class='bx bx-calendar'></i> ${d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</span>`;
+    }
+    if (deadline) {
+        const dl = new Date(deadline);
+        html += `<span class="event-info-deadline"><i class='bx bx-time'></i> Deadline: ${dl.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>`;
+    }
+
+    if (html) {
+        document.getElementById('eventInfo').innerHTML = html;
+        infoDiv.style.display = 'flex';
+    } else {
+        infoDiv.style.display = 'none';
+    }
+}
+
+document.getElementById('regEvent').addEventListener('change', updateEventInfo);
+
+/* Submit registration */
+async function submitRegistration(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Submitting...';
+
+    try {
+        const eventId = document.getElementById('regEvent').value;
+        const opt = document.getElementById('regEvent').options[document.getElementById('regEvent').selectedIndex];
+        const eventName = opt.dataset.name || opt.textContent;
+
+        const reg = {
+            id: generateRegId(),
+            eventId: eventId,
+            eventName: eventName,
+            name: document.getElementById('regName').value.trim(),
+            email: document.getElementById('regEmail').value.trim(),
+            mobile: document.getElementById('regMobile').value.trim(),
+            rbt: document.getElementById('regRbt').value.trim(),
+            department: document.getElementById('regDept').value.trim(),
+            year: document.getElementById('regYear').value,
+            groupSize: parseInt(document.getElementById('regGroupSize').value) || 1,
+            status: 'pending',
+            entryType: 'form',
+            ticketId: null,
+            submittedAt: new Date().toISOString(),
+            reviewedAt: null
+        };
+
+        const safeName = eventName.replace(/[.#$[\]]/g, '_');
+        await fbSet('rmc_registrations/' + safeName + '/' + reg.id, reg);
+
+        document.getElementById('registrationForm').style.display = 'none';
+        document.getElementById('successState').style.display = 'block';
+        document.getElementById('successDetails').innerHTML = `
+            <div class="detail-row"><span>Event:</span> <strong>${eventName}</strong></div>
+            <div class="detail-row"><span>Name:</span> <strong>${reg.name}</strong></div>
+            <div class="detail-row"><span>Email:</span> <strong>${reg.email}</strong></div>
+            <div class="detail-row"><span>Status:</span> <strong class="status-pending">Pending Review</strong></div>
+        `;
+
+        // Check if ticket already exists (e.g. instant auto-accept)
+        checkTicketStatus(reg.id, safeName);
+
+    } catch (err) {
+        console.error('Registration error:', err);
+        showRegToast('Something went wrong. Please try again.', 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bx bx-send"></i> SUBMIT REGISTRATION';
+    }
+}
+
+window.submitRegistration = submitRegistration;
+
+/* Check if ticket exists for a registration */
+async function checkTicketStatus(regId, safeName) {
+    try {
+        const reg = await fbGet('rmc_registrations/' + safeName + '/' + regId);
+        if (reg && reg.ticketId) {
+            document.getElementById('ticketLinkBox').style.display = 'block';
+            document.getElementById('ticketLink').href = 'ticket.html?id=' + reg.ticketId;
+        }
+    } catch (e) { /* ignore */ }
+}
+
+/* Init */
+loadEvents();
+</script>
+<script>
+(function() {
+    const cv  = document.getElementById('mathBg');
+    if (!cv) return;
+    const ctx = cv.getContext('2d');
+    let W, H, pts = [], objs = [], raf;
+
+    const SYMBOLS = [
+        '\u03b1','\u03b2','\u03b3','\u03b4','\u03b5','\u03b6','\u03b7','\u03b8','\u03ba','\u03bb',
+        '\u03bc','\u03bd','\u03be','\u03c0','\u03c1','\u03c3','\u03c4','\u03c5','\u03c6','\u03c7',
+        '\u03c8','\u03c9','\u0393','\u0394','\u039b','\u03a3','\u03a6','\u03a8','\u03a9','\u03a0',
+        '\u222b','\u222c','\u222d','\u222e','\u2202','\u2207','\u2211','\u220f','\u221e','\u2248',
+        '\u2243','\u224d','\u2261','\u2260','\u2264','\u2265','\u226a','\u226b','\u221d','\u2118',
+        '\u2200','\u2203','\u2204','\u2208','\u2209','\u2286','\u2287','\u2282','\u2283','\u2229',
+        '\u222a','\u2295','\u2297','\u2299','\u22a5','\u2234','\u2235','\u221a','\u221b','\u221c',
+        '\u2220','\u22be','\u27c2','\u2245','\u223c','\u00b1','\u00d7','\u00f7'
+    ];
+
+    const FORMULAS = [
+        'E = mc\u00b2','a\u00b2 + b\u00b2 = c\u00b2','F = ma','PV = nRT',
+        '\u222bf(x)dx','d/dx(e\u02e3) = e\u02e3','d/dx(sin x) = cos x',
+        '\u2202\u00b2u / \u2202t\u00b2','lim(x\u21920) sin(x)/x = 1',
+        '\u2211n = n(n+1)/2','\u2211n\u00b2 = n(n+1)(2n+1)/6',
+        '\u2211(1/n\u00b2) = \u03c0\u00b2/6',
+        'sin\u00b2\u03b8 + cos\u00b2\u03b8 = 1','cos(2\u03b8) = 1 - 2sin\u00b2\u03b8',
+        'tan\u03b8 = sin\u03b8 / cos\u03b8','e^(i\u03b8) = cos\u03b8 + i sin\u03b8',
+        'sin(A+B) = sinA cosB + cosA sinB',
+        'P(A|B) = P(B|A)P(A)/P(B)','E[X] = x P(X=x)',
+        'Var(X) = E[X\u00b2] - (E[X])\u00b2',
+        'det(A) = ad - bc','Ax = \u03bbx','tr(A) = a\u1d62\u1d62',
+        '\u0393(n+1) = n!','\u03b6(s) = (1/n\u02e2)',
+        'a \u2261 b (mod n)',
+        'F = Gm\u2081m\u2082/r\u00b2','V = \u03c0r\u00b2h','A = 4\u03c0r\u00b2',
+        '\u2207\u00b2\u03c6 = 0','c\u00b2 = a\u00b2 + b\u00b2 - 2ab cosC',
+        'z = re^(i\u03b8)','i\u00b2 = j\u00b2 = k\u00b2 = -1',
+        'x\u2099\u208a\u2081 = rx\u2099(1 - x\u2099)',
+        'H = -p\u1d62 log(p\u1d62)',
+        'sinh(x) = (e\u02e3 - e^\u207bx)/2',
+        '\u222e E dA = Q/\u03b5\u2080',
+        '\u03c3 = (x-\u03bc)\u00b2/n',
+        'eⁱ\u03c0 + 1 = 0'
+    ];
+
+    const GOLD  = (a) => 'rgba(192,160,96,' + a + ')';
+    const CREAM = (a) => 'rgba(220,200,160,' + a + ')';
+    const BLUE  = (a) => 'rgba(140,180,220,' + a + ')';
+    const rand  = (a, b) => a + Math.random() * (b - a);
+    const pick  = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+    function buildScene() {
+        pts  = [];
+        objs = [];
+        var isMobile       = window.innerWidth < 768;
+        var PARTICLE_COUNT = isMobile ? 50  : 90;
+        var SYMBOL_COUNT   = isMobile ? 28  : 55;
+        var FORMULA_COUNT  = isMobile ? 14  : 30;
+        var ORBIT_COUNT    = isMobile ? 3   : 6;
+
+        for (var i = 0; i < PARTICLE_COUNT; i++) {
+            pts.push({ x:rand(0,W), y:rand(0,H), vx:rand(-0.35,0.35), vy:rand(-0.35,0.35),
+                       r:rand(1.0,2.8), ph:rand(0,Math.PI*2), spd:rand(0.01,0.04) });
+        }
+        for (var i = 0; i < SYMBOL_COUNT; i++) {
+            objs.push({ type:'sym', x:rand(0,W), y:rand(0,H), vx:rand(-0.28,0.28), vy:rand(-0.28,0.28),
+                        sym:pick(SYMBOLS), size:rand(13,40), alpha:rand(0.18,0.70),
+                        ph:rand(0,Math.PI*2), spd:rand(0.008,0.025),
+                        rot:rand(-0.5,0.5), rotSpd:rand(-0.005,0.005),
+                        col: Math.random() < 0.85 ? 'gold' : 'blue' });
+        }
+        for (var i = 0; i < FORMULA_COUNT; i++) {
+            objs.push({ type:'formula', x:rand(0,W), y:rand(0,H), vx:rand(-0.18,0.18), vy:rand(-0.18,0.18),
+                        text:pick(FORMULAS), size:rand(10,16), alpha:rand(0.15,0.55),
+                        ph:rand(0,Math.PI*2), spd:rand(0.005,0.018) });
+        }
+        for (var i = 0; i < ORBIT_COUNT; i++) {
+            objs.push({ type:'orbit', cx:rand(W*0.05,W*0.95), cy:rand(H*0.05,H*0.95),
+                        rx:rand(25,100), ry:rand(18,60),
+                        angle:rand(0,Math.PI*2), spd:rand(0.003,0.014), alpha:rand(0.06,0.18) });
+        }
+    }
+
+    function wrap(o) {
+        var pad = 60;
+        if (o.x < -pad)    o.x = W + pad;
+        if (o.x > W + pad) o.x = -pad;
+        if (o.y < -pad)    o.y = H + pad;
+        if (o.y > H + pad) o.y = -pad;
+    }
+
+    function draw() {
+        ctx.clearRect(0,0,W,H);
+        ctx.fillStyle = '#0a0a0f';
+        ctx.fillRect(0,0,W,H);
+
+        var grd = ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,W*0.65);
+        grd.addColorStop(0,'rgba(192,160,96,0.045)');
+        grd.addColorStop(1,'rgba(0,0,0,0)');
+        ctx.fillStyle = grd;
+        ctx.fillRect(0,0,W,H);
+
+        for (var i = 0; i < pts.length; i++) {
+            var p = pts[i];
+            p.x += p.vx; p.y += p.vy; p.ph += p.spd;
+            if (p.x < 0 || p.x > W) p.vx *= -1;
+            if (p.y < 0 || p.y > H) p.vy *= -1;
+        }
+
+        var CD = 110;
+        for (var i = 0; i < pts.length; i++) {
+            for (var j = i+1; j < pts.length; j++) {
+                var dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+                var d  = Math.sqrt(dx*dx + dy*dy);
+                if (d < CD) {
+                    ctx.strokeStyle = GOLD(0.22*(1-d/CD));
+                    ctx.lineWidth   = 0.5;
+                    ctx.beginPath();
+                    ctx.moveTo(pts[i].x, pts[i].y);
+                    ctx.lineTo(pts[j].x, pts[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        for (var i = 0; i < pts.length; i++) {
+            var p = pts[i];
+            ctx.fillStyle = GOLD(0.4 + 0.55*Math.sin(p.ph));
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+            ctx.fill();
+        }
+
+        for (var i = 0; i < objs.length; i++) {
+            var o = objs[i];
+            if (o.type === 'sym') {
+                o.x += o.vx; o.y += o.vy; o.ph += o.spd; o.rot += o.rotSpd;
+                wrap(o);
+                var a = o.alpha*(0.55+0.45*Math.sin(o.ph));
+                ctx.save();
+                ctx.translate(o.x, o.y);
+                ctx.rotate(o.rot);
+                ctx.fillStyle    = o.col === 'gold' ? GOLD(a) : BLUE(a);
+                ctx.font         = o.size + "px Georgia,'Times New Roman',serif";
+                ctx.textAlign    = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(o.sym, 0, 0);
+                ctx.restore();
+            } else if (o.type === 'formula') {
+                o.x += o.vx; o.y += o.vy; o.ph += o.spd;
+                wrap(o);
+                var a = o.alpha*(0.5+0.5*Math.sin(o.ph));
+                ctx.fillStyle    = CREAM(a);
+                ctx.font         = o.size + "px 'Courier New',Courier,monospace";
+                ctx.textAlign    = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(o.text, o.x, o.y);
+            } else if (o.type === 'orbit') {
+                o.angle += o.spd;
+                ctx.strokeStyle = GOLD(o.alpha);
+                ctx.lineWidth   = 0.75;
+                ctx.beginPath();
+                ctx.ellipse(o.cx, o.cy, o.rx, o.ry, o.angle*0.25, 0, Math.PI*2);
+                ctx.stroke();
+                var px = o.cx + o.rx*Math.cos(o.angle);
+                var py = o.cy + o.ry*Math.sin(o.angle);
+                ctx.fillStyle = GOLD(0.6);
+                ctx.beginPath();
+                ctx.arc(px, py, 2.2, 0, Math.PI*2);
+                ctx.fill();
+            }
+        }
+        raf = requestAnimationFrame(draw);
+    }
+
+    function resize() {
+        W = cv.width  = window.innerWidth;
+        H = cv.height = window.innerHeight;
+        if (raf) cancelAnimationFrame(raf);
+        buildScene();
+        raf = requestAnimationFrame(draw);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+})();
+</script>
+</body>
+</html>

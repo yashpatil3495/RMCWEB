@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Ticket | RSCOE Mathematics Club (RMC)</title>
+    <meta name="description" content="View and download your digital entry ticket for RSCOE Mathematics Club events.">
+    <meta name="robots" content="noindex, follow">
+    <link rel="icon" type="image/png" href="img/logo.png">
+    <link rel="apple-touch-icon" href="img/logo.png">
+    <link rel="stylesheet" href="css/ticket.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="ticketContainer">
+        <div class="ticket-loading">
+            <i class='bx bx-loader-alt'></i>
+            <p>Loading ticket...</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getDatabase, ref, set, get, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC5JKcHWc9N7OcH57vFVxF5gBHxKfsgjSw",
+            authDomain: "rmcwebsite10.firebaseapp.com",
+            databaseURL: "https://rmcwebsite10-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "rmcwebsite10",
+            storageBucket: "rmcwebsite10.firebasestorage.app",
+            messagingSenderId: "731012572422",
+            appId: "1:731012572422:web:f1cc2692e7236f600daa87"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        window._firebaseDB = db;
+        window._firebaseRef = ref;
+        window._firebaseSet = set;
+        window._firebaseGet = get;
+        window._firebaseRemove = remove;
+        window._firebaseOnValue = onValue;
+        window._firebaseReady = true;
+        window.dispatchEvent(new Event('firebaseReady'));
+    </script>
+    <script src="js/firebase-db.js"></script>
+    <script src="js/ticket.js"></script>
+
+</body>
+</html>

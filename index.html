@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary SEO Meta Tags -->
+    <title>RSCOE Mathematics Club (RMC) | JSPM's Rajarshi Shahu College of Engineering, Pune</title>
+    <meta name="title" content="RSCOE Mathematics Club (RMC) | JSPM Pune">
+    <meta name="description"
+        content="Official website of the RSCOE Mathematics Club (RMC) at JSPM's Rajarshi Shahu College of Engineering, Tathawade, Pune. Join us for math events, expert talks, AI workshops, and more.">
+    <meta name="keywords"
+        content="RSCOE Mathematics Club, RMC RSCOE, JSPM Math Club, Rajarshi Shahu College Mathematics, RMC Pune, JSPM RSCOE, Mathematics Club Pune, Engineering Mathematics Club, Tathawade Pune">
+    <meta name="author" content="RSCOE Mathematics Club">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rmcwebsite10.web.app/">
+    <meta property="og:title" content="RSCOE Mathematics Club (RMC) | JSPM Pune">
+    <meta property="og:description"
+        content="Official website of the RSCOE Mathematics Club. Events, workshops, expert talks and more at JSPM's Rajarshi Shahu College of Engineering, Pune.">
+    <meta property="og:image" content="https://rmcwebsite10.web.app/img/logo.png">
+    <meta property="og:image:width" content="400">
+    <meta property="og:image:height" content="400">
+    <meta property="og:site_name" content="RMC RSCOE">
+    <meta property="og:locale" content="en_IN">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://rmcwebsite10.web.app/">
+    <meta name="twitter:title" content="RSCOE Mathematics Club (RMC) | JSPM Pune">
+    <meta name="twitter:description"
+        content="Official website of the RSCOE Mathematics Club at JSPM's Rajarshi Shahu College of Engineering, Pune.">
+    <meta name="twitter:image" content="https://rmcwebsite10.web.app/img/logo.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://rmcwebsite10.web.app/">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./img/logo.png">
+    <link rel="apple-touch-icon" href="./img/logo.png">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "RSCOE Mathematics Club",
+        "alternateName": ["RMC", "RMC RSCOE", "JSPM Math Club"],
+        "url": "https://rmcwebsite10.web.app",
+        "logo": "https://rmcwebsite10.web.app/img/logo.png",
+        "description": "Official Mathematics Club of JSPM's Rajarshi Shahu College of Engineering, Tathawade, Pune",
+        "email": "rmcshg1230@gmail.com",
+        "telephone": "+911203597255",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "S.No. 80, Tathawade",
+            "addressLocality": "Pune",
+            "addressRegion": "Maharashtra",
+            "postalCode": "411033",
+            "addressCountry": "IN"
+        },
+        "parentOrganization": {
+            "@type": "EducationalOrganization",
+            "name": "JSPM's Rajarshi Shahu College of Engineering",
+            "url": "https://rscoe.edu.in"
+        },
+        "sameAs": [
+            "https://www.instagram.com/rscoe_mathematics.club",
+            "https://www.linkedin.com/company/rscoe-mathematics-club/"
+        ]
+    }
+    </script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/certificate.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ========== PRELOADER ========== -->
+    <div id="preloader">
+        <img src="img/logo.png" alt="RMC Logo" class="preloader-logo">
+        <div class="preloader-bar-wrap">
+            <div class="preloader-bar"></div>
+        </div>
+        <div class="preloader-text">LOADING — RSCOE MATHEMATICS CLUB</div>
+    </div>
+
+    <!-- PAGE TRANSITION OVERLAY -->
+    <div id="page-transition"></div>
+
+
+    <header class="main-header">
+        <div class="logos-left">
+            <img src="./img/jspm..png" alt="JSPM Rajarshi Shahu College of Engineering Logo" class="college-logo-left"
+                fetchpriority="high">
+            <img src="./img/logo.png" alt="RSCOE Mathematics Club Logo" class="club-logo-left">
+        </div>
+        <div class="college-name">
+            <div class="college-name-small">JSPM's Rajarshi Shahu College of Engineering, Tathawade, Pune</div>
+            <div class="college-name-big shimmer-text">RSCOE Mathematics Club</div>
+        </div>
+        <div class="logos-right">
+            <img src="./img/rsmc.png" alt="RSCOE College Logo" class="college-logo-right" fetchpriority="high">
+        </div>
+        <div class="menu-icon" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- ========== ANNOUNCEMENT BANNER ========== -->
+    <div id="announcementBanner" class="announcement-banner" style="display:none;">
+        <div class="announcement-content" id="announcementContent"></div>
+        <button class="announcement-close" id="announcementClose" onclick="dismissBanner()">&times;</button>
+    </div>
+
+    <div class="video-bg">
+        <canvas id="mathBg"></canvas>
+        <div class="video-overlay">
+            <img src="img/logo.png" alt="RSCOE Mathematics Club Logo" class="logo">
+        </div>
+    </div>
+
+    <nav class="side-menu" id="sideMenu">
+        <a href="#home" onclick="toggleMenu()">HOME</a>
+        <a href="#about" onclick="toggleMenu()">ABOUT</a>
+        <a href="#history" onclick="toggleMenu()">HISTORY OF MATHEMATICS</a>
+        <a href="#activities" onclick="toggleMenu()">ACTIVITIES</a>
+        <a href="#events" onclick="toggleMenu()">EVENTS</a>
+        <a href="#upcoming-events" onclick="toggleMenu()">UPCOMING EVENTS</a>
+        <a href="#members" onclick="toggleMenu()">MEMBERS</a>
+        <a href="#register" onclick="toggleMenu()">REGISTER</a>
+        <a href="#certificates" onclick="toggleMenu()">CERTIFICATES</a>
+        <a href="#contact-us" onclick="toggleMenu()">CONTACT US</a>
+    </nav>
+
+    <div class="scroll-up" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+        <span></span>
+    </div>
+
+    <div class="content">
+
+        <section class="about-section reveal" id="about" itemscope itemtype="https://schema.org/AboutPage">
+            <h2 itemprop="name">ABOUT US</h2>
+            <p>
+                The Mathematics Club was founded by two students whose curiosity
+                led them to an interstate competition, where they represented Pune
+                as the only engineering participants. Their experience and the
+                appreciation received from the panel inspired the question, "Why not others?"
+                Collaboration with faculty members during early event planning naturally
+                evolved into the formal establishment of the club. Today, the
+                club is dedicated exclusively to pure mathematics and guided by
+                the motto "Apply and Innovate."
+            </p>
+        </section>
+
+        <section class="history-section reveal" id="history">
+            <h2>HISTORY OF MATHEMATICS</h2>
+            <p class="history-intro">A lineage of brilliance — the Indian mathematicians who shaped how the world thinks.</p>
+            <div class="history-timeline">
+
+                <div class="hist-card">
+                    <div class="hist-card-era">476 – 550 CE</div>
+                    <div class="hist-card-body">
+                        <div class="hist-symbol">α</div>
+                        <h3 class="hist-name">Aryabhata</h3>
+                        <div class="hist-tag">Astronomy · Algebra</div>
+                        <p class="hist-desc">One of India's earliest mathematical giants. His <em>Aryabhatiya</em> computed π with remarkable precision, explained Earth's axial rotation, and developed methods for solving quadratic equations centuries before the West.</p>
+                    </div>
+                </div>
+
+                <div class="hist-card">
+                    <div class="hist-card-era">598 – 668 CE</div>
+                    <div class="hist-card-body">
+                        <div class="hist-symbol">0</div>
+                        <h3 class="hist-name">Brahmagupta</h3>
+                        <div class="hist-tag">Algebra · Number Theory</div>
+                        <p class="hist-desc">Author of the <em>Brahmasphutasiddhanta</em>, the first written text to treat zero as a number with defined arithmetic rules — a contribution that transformed all of mathematics.</p>
+                    </div>
+                </div>
+
+                <div class="hist-card">
+                    <div class="hist-card-era">1114 – 1185</div>
+                    <div class="hist-card-body">
+                        <div class="hist-symbol">∫</div>
+                        <h3 class="hist-name">Bhaskara II</h3>
+                        <div class="hist-tag">Calculus · Astronomy</div>
+                        <p class="hist-desc">Known as Bhaskaracharya, his <em>Lilavati</em> remains a landmark text. He explored early concepts of differential calculus and described gravitational attraction centuries before Newton.</p>
+                    </div>
+                </div>
+
+                <div class="hist-card">
+                    <div class="hist-card-era">1340 – 1425</div>
+                    <div class="hist-card-body">
+                        <div class="hist-symbol">π</div>
+                        <h3 class="hist-name">Madhava of Sangamagrama</h3>
+                        <div class="hist-tag">Infinite Series · Calculus</div>
+                        <p class="hist-desc">Founder of the Kerala School of Mathematics. He derived infinite series for sine, cosine, and π — anticipating the work of Newton and Leibniz by nearly 300 years.</p>
+                    </div>
+                </div>
+
+                <div class="hist-card hist-card-featured">
+                    <div class="hist-card-era">1887 – 1920</div>
+                    <div class="hist-card-body">
+                        <div class="hist-symbol">∞</div>
+                        <h3 class="hist-name">Srinivasa Ramanujan</h3>
+                        <div class="hist-tag">Number Theory · Infinite Series</div>
+                        <p class="hist-desc">A self-taught genius from Tamil Nadu whose notebooks still yield undiscovered theorems. His collaboration with G. H. Hardy at Cambridge produced breakthroughs in number theory, continued fractions, and partition functions. National Mathematics Day is celebrated on his birthday — 22 December.</p>
+                    </div>
+                </div>
+
+                <div class="hist-card">
+                    <div class="hist-card-era">1920 – 2023</div>
+                    <div class="hist-card-body">
+                        <div class="hist-symbol">σ</div>
+                        <h3 class="hist-name">C. R. Rao</h3>
+                        <div class="hist-tag">Statistics · Information Theory</div>
+                        <p class="hist-desc">World-renowned statistician whose Cramér–Rao Bound set the fundamental limit on estimator precision. Recipient of India's Padma Vibhushan and the International Prize in Statistics.</p>
+                    </div>
+                </div>
+
+                <div class="hist-card">
+                    <div class="hist-card-era">1923 – 1983</div>
+                    <div class="hist-card-body">
+                        <div class="hist-symbol">Λ</div>
+                        <h3 class="hist-name">Harish-Chandra</h3>
+                        <div class="hist-tag">Representation Theory · Analysis</div>
+                        <p class="hist-desc">A titan of abstract algebra and harmonic analysis on Lie groups. His work reshaped modern mathematics, and the Harish-Chandra Research Institute in Prayagraj carries his legacy.</p>
+                    </div>
+                </div>
+
+                <div class="hist-card">
+                    <div class="hist-card-era">1929 – 2013</div>
+                    <div class="hist-card-body">
+                        <div class="hist-symbol">×</div>
+                        <h3 class="hist-name">Shakuntala Devi</h3>
+                        <div class="hist-tag">Mental Arithmetic · Education</div>
+                        <p class="hist-desc">Known globally as the "Human Computer." She multiplied two 13-digit numbers in 28 seconds and earned a Guinness World Record, dedicating her life to making mathematics joyful and accessible.</p>
+                    </div>
+                </div>
+
+                <div class="hist-card">
+                    <div class="hist-card-era">1974 – Present</div>
+                    <div class="hist-card-body">
+                        <div class="hist-symbol">ζ</div>
+                        <h3 class="hist-name">Manjul Bhargava</h3>
+                        <div class="hist-tag">Number Theory · Fields Medal</div>
+                        <p class="hist-desc">Princeton professor and Fields Medal laureate (2014). His revolutionary work on higher-order composition laws in number theory opened entirely new directions in one of mathematics' oldest fields.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="activity-section reveal" id="activities">
+            <h2>ACTIVITIES</h2>
+            <h4>AI WORKSHOP</h4>
+            <p>RMC (RSCOE Mathematics Club) hosts guest lectures and many student led lectures on machine learning and
+                application of pure mathematics. Mentors provided a detailed and beginner friendly introduction to ML
+                and how it's used. It provided students with a meaningful opportunity to connect mathematical theory
+                with modern, applied problem-solving.</p>
+            <div class="activities-grid">
+                <div class="activity-card1">
+                    <picture>
+                        <source srcset="img/aiml1.webp" type="image/webp">
+                        <img src="img/aiml1.jpeg" alt="AI Workshop at RMC Mathematics Club" loading="lazy" width="600" height="400" decoding="async">
+                    </picture>
+                    <div class="activity-overlay"><span>AI Workshop — Session I</span></div>
+                </div>
+                <div class="activity-card1">
+                    <picture>
+                        <source srcset="img/aiml2.webp" type="image/webp">
+                        <img src="img/aiml2.jpeg" alt="Machine Learning session by RMC" loading="lazy" width="600" height="400" decoding="async">
+                    </picture>
+                    <div class="activity-overlay"><span>AI Workshop — Session II</span></div>
+                </div>
+                <div class="activity-card">
+                    <video autoplay muted loop playsinline preload="none" loading="lazy">
+                        <source src="img/aiml.mp4" type="video/mp4">
+                    </video>
+                    <div class="activity-overlay"><span>Workshop Highlights</span></div>
+                </div>
+            </div>
+            <h4>QUIZ & PUZZLE DAY</h4>
+            <p>Maths Quiz & Puzzles Day is a weekly activity organized by the Maths Club to make learning mathematics
+                more engaging and enjoyable. It helps students improve their logical thinking, analytical ability, and
+                problem-solving skills.</p>
+            <h5 class="activity-subhead">FOR EXAMPLES:</h5>
+            <div class="activities-grid">
+                <div class="activity-card1">
+                    <picture>
+                        <source srcset="./img/p1.webp" type="image/webp">
+                        <img src="./img/p1.jpeg" alt="Math Quiz and Puzzle event by RMC" loading="lazy" width="600" height="400" decoding="async">
+                    </picture>
+                    <div class="activity-overlay"><span>Quiz & Puzzle Day</span></div>
+                </div>
+                <div class="activity-card1">
+                    <picture>
+                        <source srcset="./img/p3.webp" type="image/webp">
+                        <img src="./img/p3.jpeg" alt="Students solving math puzzles at RMC event" loading="lazy" width="600" height="400" decoding="async">
+                    </picture>
+                    <div class="activity-overlay"><span>Puzzle Challenge</span></div>
+                </div>
+                <div class="activity-card">
+                    <picture>
+                        <source srcset="./img/p2.webp" type="image/webp">
+                        <img src="./img/p2.jpeg" alt="Mathematics puzzle competition at RSCOE" loading="lazy" width="600" height="400" decoding="async">
+                    </picture>
+                    <div class="activity-overlay"><span>Team Puzzle Round</span></div>
+                </div>
+            </div>
+            <h4>RESEARCH AND LEARNING</h4>
+            <div class="activities-grid">
+                <div class="activity-card1">
+                    <picture>
+                        <source srcset="./img/A2.webp" type="image/webp">
+                        <img src="./img/A2.jpeg" alt="Mathematics research activity at RMC" loading="lazy" width="600" height="400" decoding="async">
+                    </picture>
+                    <div class="activity-overlay"><span>Research Session</span></div>
+                </div>
+                <div class="activity-card1">
+                    <picture>
+                        <source srcset="./img/A3.webp" type="image/webp">
+                        <img src="./img/A3.jpeg" alt="Students at RMC Mathematics Club research session" loading="lazy" width="600" height="400" decoding="async">
+                    </picture>
+                    <div class="activity-overlay"><span>Group Study</span></div>
+                </div>
+                <div class="activity-card">
+                    <picture>
+                        <source srcset="./img/A1.webp" type="image/webp">
+                        <img src="./img/A1.jpeg" alt="Research and learning session at RSCOE Mathematics Club" loading="lazy" width="600" height="400" decoding="async">
+                    </picture>
+                    <div class="activity-overlay"><span>Learning Lab</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== REDESIGNED EVENTS SECTION ========== -->
+        <section class="events-section reveal" id="events" itemscope itemtype="https://schema.org/Event">
+            <div class="events-header">
+                <div class="events-label">OUR EVENTS</div>
+                <h2>MOMENTS THAT MATTER</h2>
+                <p class="events-subtitle">Explore the milestones and activities that define the RMC journey</p>
+            </div>
+
+            <div class="events-ticker-bar">
+                <span class="ticker-dot"></span>
+                <span class="ticker-text" id="tickerText">NEXT EVENT COMING SOON STAY TUNED</span>
+            </div>
+
+            <div class="events-arena">
+                <!-- Featured card (large) -->
+                <div class="event-featured" id="featuredCard">
+                    <div class="event-featured-img-wrap">
+                        <img id="featuredImg" src="./img/2026.jpeg" alt="Event" loading="lazy" decoding="async">
+                        <div class="event-featured-badge" id="featuredBadge">FEATURED</div>
+                        <div class="event-featured-overlay">
+                            <span class="event-featured-num" id="featuredNum">01</span>
+                        </div>
+                    </div>
+                    <div class="event-featured-info">
+                        <div class="event-meta-row">
+                            <span class="event-tag" id="featuredTag">Technical</span>
+                            <span class="event-date" id="featuredDate">2026</span>
+                        </div>
+                        <h3 class="event-featured-title" id="featuredTitle">Digital Treasure Hunt</h3>
+                        <p class="event-featured-desc" id="featuredDesc">
+                            We contributed as event coordinators to Cyber Heist, a technical event organized by the
+                            Department of Engineering Sciences and Humanities, supporting the planning and execution of
+                            all three rounds. Our responsibilities included framing and curating MCQ questions for Round
+                            1, designing and validating debugging challenges for Round 2, and coordinating the Real Hunt
+                            (treasure hunt) in Round 3 by assisting with logistics and execution.
+                        </p>
+                        <div class="event-featured-footer">
+                            <div class="event-stat">
+                                <span class="stat-num" id="featuredStat">3</span>
+                                <span class="stat-label">Rounds</span>
+                            </div>
+                            <div class="event-stat">
+                                <span class="stat-num" id="featuredStat2">50+</span>
+                                <span class="stat-label">Participants</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thumbnail rail -->
+                <div class="events-rail">
+                    <div class="rail-label">ALL EVENTS</div>
+                    <div class="rail-cards" id="railCards"></div>
+                    <div class="rail-nav">
+                        <button class="rail-btn" id="prevBtn" onclick="prevEvent()">&#8592;</button>
+                        <div class="rail-progress" id="railProgress"></div>
+                        <button class="rail-btn" id="nextBtn" onclick="nextEvent()">&#8594;</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats bar -->
+            <div class="events-stats-bar">
+                <div class="es-stat"><span class="es-num">3+</span><span class="es-label">Events Hosted</span></div>
+                <div class="es-divider"></div>
+                <div class="es-stat"><span class="es-num">200+</span><span class="es-label">Participants</span></div>
+                <div class="es-divider"></div>
+                <div class="es-stat"><span class="es-num">3</span><span class="es-label">Years Active</span></div>
+                <div class="es-divider"></div>
+                <div class="es-stat"><span class="es-num">∞</span><span class="es-label">Passion for Math</span></div>
+            </div>
+        </section>
+        <!-- ========== END EVENTS SECTION ========== -->
+
+        <!-- ========== UPCOMING EVENTS (PUBLIC) ========== -->
+        <section class="upcoming-section reveal" id="upcoming-events">
+            <div class="upcoming-header">
+                <div class="upcoming-label">COMING SOON</div>
+                <h2>UPCOMING EVENTS</h2>
+                <p class="upcoming-subtitle">Don't miss out! Register before it's too late!</p>
+            </div>
+            <div class="upcoming-cards" id="upcomingCards">
+                <!-- Dynamically populated from localStorage -->
+            </div>
+        </section>
+        <!-- ========== END UPCOMING EVENTS ========== -->
+
+        <!-- ========== MEMBERS PREVIEW SECTION ========== -->
+        <section class="members-section reveal" id="members">
+            <div class="members-preview-header">
+                <div class="members-preview-label">OUR TEAM</div>
+                <h2>CLUB MEMBERS</h2>
+                <p class="members-preview-subtitle">The minds behind RMC — faculty advisors and student leaders driving every initiative</p>
+            </div>
+
+            <div class="members-inline-grid">
+                <div class="member-inline-card">
+                    <div class="member-avatar-circle">FA</div>
+                    <div class="member-inline-info">
+                        <div class="member-inline-name">Faculty Advisor</div>
+                        <div class="member-inline-role">Academic Mentor</div>
+                    </div>
+                </div>
+                <div class="member-inline-card">
+                    <div class="member-avatar-circle">PR</div>
+                    <div class="member-inline-info">
+                        <div class="member-inline-name">President</div>
+                        <div class="member-inline-role">Club Leadership</div>
+                    </div>
+                </div>
+                <div class="member-inline-card">
+                    <div class="member-avatar-circle">VP</div>
+                    <div class="member-inline-info">
+                        <div class="member-inline-name">Vice President</div>
+                        <div class="member-inline-role">Operations</div>
+                    </div>
+                </div>
+                <div class="member-inline-card member-inline-more">
+                    <div class="member-avatar-circle member-avatar-plus">+</div>
+                    <div class="member-inline-info">
+                        <div class="member-inline-name">& More</div>
+                        <div class="member-inline-role">Full Team Inside</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <a href="members.html" target="_blank" class="btn">VIEW ALL MEMBERS</a>
+            </div>
+        </section>
+
+
+        <!-- ========== TESTIMONIALS ========== -->
+        <section class="testimonials-section reveal" id="testimonials">
+            <div class="testimonials-header">
+                <span class="testimonials-label">VOICES OF RMC</span>
+                <h2>WHAT OUR MEMBERS SAY</h2>
+                <p>Hear from the students who make RMC what it is</p>
+            </div>
+            <div class="testimonials-slider" id="testiSlider">
+                <div class="testimonials-track" id="testiTrack">
+                    <!-- Testimonials loaded dynamically from Firebase -->
+                    <div class="testi-loading">
+                        <span class="testi-loading-dot"></span>
+                        <span class="testi-loading-dot"></span>
+                        <span class="testi-loading-dot"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonials-nav">
+                <button class="testi-btn" id="testiBtnPrev" aria-label="Previous">&#8592;</button>
+                <div class="testi-dots" id="testiDots"></div>
+                <button class="testi-btn" id="testiBtnNext" aria-label="Next">&#8594;</button>
+            </div>
+        </section>
+        <!-- ========== END TESTIMONIALS ========== -->
+
+        <section class="register-section reveal" id="register">
+            <h2>ENTER IN RMC EVENT</h2>
+            <div class="btn-container">
+                <a href="register.html" target="_blank" class="btn">REGISTER NOW</a>
+            </div>
+        </section>
+
+        <!-- ===== Inline Certificate Search ===== -->
+        <section class="cert-inline-section reveal" id="certificates">
+            <div class="cert-inline-header">
+                <div class="cert-label">VERIFICATION SERVICE</div>
+                <h2>DOWNLOAD YOUR CERTIFICATE</h2>
+                <p>Search by your name or RBT number to find and download your participation certificate.</p>
+            </div>
+            <div class="cert-search-section">
+                <div class="cert-search-card">
+                    <h3>🔍 SEARCH BY NAME OR RBT NUMBER</h3>
+                    <div class="cert-search-row">
+                        <input type="text" id="certSearch" placeholder="Enter your name or RBT number...">
+                        <select id="certEventFilter">
+                            <option value="">All Events</option>
+                        </select>
+                    </div>
+                    <button class="cert-search-btn" onclick="searchCertificates()">
+                        <i class='bx bx-search'></i> Search Certificates
+                    </button>
+                </div>
+            </div>
+            <div class="cert-results-section" id="certResults"></div>
+            <div class="toast" id="toast"></div>
+        </section>
+
+        <section class="contact-section reveal" id="contact-us" itemscope itemtype="https://schema.org/ContactPage">
+            <div class="contact-header">
+                <h2>CONTACT US</h2>
+                <p class="contact-subtitle">Get in touch with us. We'd love to hear from you!</p>
+            </div>
+
+            <div class="contact-cards-grid">
+                <!-- Phone Card -->
+                <div class="contact-card">
+                    <div class="contact-card-icon">
+                        <i class='bx bxs-phone'></i>
+                    </div>
+                    <h3>Phone</h3>
+                    <p class="contact-card-label">Call us anytime</p>
+                    <a href="tel:+911234567890" class="contact-card-link">
+                        +91 1203597255
+                    </a>
+                </div>
+
+                <!-- Email Card -->
+                <div class="contact-card">
+                    <div class="contact-card-icon">
+                        <i class='bx bxl-gmail'></i>
+                    </div>
+                    <h3>Email</h3>
+                    <p class="contact-card-label">Send us a message</p>
+                    <a href="mailto:maths_club@jspmrscoe.edu.in" class="contact-card-link">
+                        maths_club@jspmrscoe.edu.in
+                    </a>
+                </div>
+
+                <!-- Instagram Card -->
+                <div class="contact-card">
+                    <div class="contact-card-icon">
+                        <i class='bx bxl-instagram'></i>
+                    </div>
+                    <h3>Instagram</h3>
+                    <p class="contact-card-label">Follow us on social media</p>
+                    <a href="https://www.instagram.com/rscoe_mathematics.club?igsh=MTgxMTk3NDJ4aHhoMA==" target="_blank"
+                        class="contact-card-link">
+                        @rscoe_mathematics.club
+                    </a>
+                </div>
+
+                <!-- LinkedIn Card -->
+                <div class="contact-card">
+                    <div class="contact-card-icon">
+                        <i class='bx bxl-linkedin'></i>
+                    </div>
+                    <h3>LinkedIn</h3>
+                    <p class="contact-card-label">Connect with us</p>
+                    <a href="https://www.linkedin.com/company/rscoe-mathematics-club/" target="_blank"
+                        class="contact-card-link">
+                        rscoe mathematics club
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="site-footer">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <img src="img/logo.png" alt="RSCOE Mathematics Club Logo" class="footer-logo">
+                    <div>
+                        <h3>RSCOE Mathematics Club</h3>
+                        <p>JSPM's Rajarshi Shahu College of Engineering, Tathawade, Pune</p>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <a href="#about">About Us</a>
+                    <a href="#events">Events</a>
+                    <a href="register.html">Register</a>
+                    <a href="certificate.html">Certificates</a>
+                    <a href="members.html">Members</a>
+                </div>
+                <div class="footer-social">
+                    <h4>Connect With Us</h4>
+                    <div class="footer-social-icons">
+                        <a href="https://www.instagram.com/rscoe_mathematics.club?igsh=MTgxMTk3NDJ4aHhoMA=="
+                            target="_blank" title="Instagram"><i class='bx bxl-instagram'></i></a>
+                        <a href="https://www.linkedin.com/company/rscoe-mathematics-club/" target="_blank"
+                            title="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+                        <a href="mailto:maths_club@jspmrscoe.edu.in" title="Email"><i class='bx bxl-gmail'></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Developed by Yash in collaboration with Inspino Global Tech Solutions.</p>
+                <p>&copy; 2024–2026 RSCOE Mathematics Club. All rights reserved.</p>
+                <p class="footer-tagline">Apply and Innovate — Driven by Mathematics</p>
+            </div>
+        </footer>
+
+
+
+        <!-- Firebase SDK -->
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+            import { getDatabase, ref, set, get, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyC5JKcHWc9N7OcH57vFVxF5gBHxKfsgjSw",
+                authDomain: "rmcwebsite10.firebaseapp.com",
+                databaseURL: "https://rmcwebsite10-default-rtdb.asia-southeast1.firebasedatabase.app",
+                projectId: "rmcwebsite10",
+                storageBucket: "rmcwebsite10.firebasestorage.app",
+                messagingSenderId: "731012572422",
+                appId: "1:731012572422:web:f1cc2692e7236f600daa87"
+            };
+
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase(app);
+            window._firebaseDB = db;
+            window._firebaseRef = ref;
+            window._firebaseSet = set;
+            window._firebaseGet = get;
+            window._firebaseRemove = remove;
+            window._firebaseOnValue = onValue;
+            window._firebaseReady = true;
+            window.dispatchEvent(new Event('firebaseReady'));
+        </script>
+        <script src="js/firebase-db.js"></script>
+        <script src="js/index.js"></script>
+        <script src="js/certificate.js"></script>
+        <script>
+            (function () {
+                const cv = document.getElementById('mathBg');
+                if (!cv) return;
+                const ctx = cv.getContext('2d');
+                let W, H, pts = [], objs = [], raf;
+
+                const SYMBOLS = [
+                    '\u03b1', '\u03b2', '\u03b3', '\u03b4', '\u03b5', '\u03b6', '\u03b7', '\u03b8', '\u03ba', '\u03bb',
+                    '\u03bc', '\u03bd', '\u03be', '\u03c0', '\u03c1', '\u03c3', '\u03c4', '\u03c5', '\u03c6', '\u03c7',
+                    '\u03c8', '\u03c9', '\u0393', '\u0394', '\u039b', '\u03a3', '\u03a6', '\u03a8', '\u03a9', '\u03a0',
+                    '\u222b', '\u222c', '\u222d', '\u222e', '\u2202', '\u2207', '\u2211', '\u220f', '\u221e', '\u2248',
+                    '\u2243', '\u224d', '\u2261', '\u2260', '\u2264', '\u2265', '\u226a', '\u226b', '\u221d', '\u2118',
+                    '\u2200', '\u2203', '\u2204', '\u2208', '\u2209', '\u2286', '\u2287', '\u2282', '\u2283', '\u2229',
+                    '\u222a', '\u2295', '\u2297', '\u2299', '\u22a5', '\u2234', '\u2235', '\u221a', '\u221b', '\u221c',
+                    '\u2220', '\u22be', '\u27c2', '\u2245', '\u223c', '\u00b1', '\u00d7', '\u00f7'
+                ];
+
+                const FORMULAS = [
+                    'E = mc\u00b2', 'a\u00b2 + b\u00b2 = c\u00b2', 'F = ma', 'PV = nRT',
+                    '\u222bf(x)dx', 'd/dx(e\u02e3) = e\u02e3', 'd/dx(sin x) = cos x',
+                    '\u2202\u00b2u / \u2202t\u00b2', 'lim(x\u21920) sin(x)/x = 1',
+                    '\u2211n = n(n+1)/2', '\u2211n\u00b2 = n(n+1)(2n+1)/6',
+                    '\u2211(1/n\u00b2) = \u03c0\u00b2/6',
+                    'sin\u00b2\u03b8 + cos\u00b2\u03b8 = 1', 'cos(2\u03b8) = 1 - 2sin\u00b2\u03b8',
+                    'tan\u03b8 = sin\u03b8 / cos\u03b8', 'e^(i\u03b8) = cos\u03b8 + i sin\u03b8',
+                    'sin(A+B) = sinA cosB + cosA sinB',
+                    'P(A|B) = P(B|A)P(A)/P(B)', 'E[X] = x P(X=x)',
+                    'Var(X) = E[X\u00b2] - (E[X])\u00b2',
+                    'det(A) = ad - bc', 'Ax = \u03bbx', 'tr(A) = a\u1d62\u1d62',
+                    '\u0393(n+1) = n!', '\u03b6(s) = (1/n\u02e2)',
+                    'a \u2261 b (mod n)',
+                    'F = Gm\u2081m\u2082/r\u00b2', 'V = \u03c0r\u00b2h', 'A = 4\u03c0r\u00b2',
+                    '\u2207\u00b2\u03c6 = 0', 'c\u00b2 = a\u00b2 + b\u00b2 - 2ab cosC',
+                    'z = re^(i\u03b8)', 'i\u00b2 = j\u00b2 = k\u00b2 = -1',
+                    'x\u2099\u208a\u2081 = rx\u2099(1 - x\u2099)',
+                    'H = -p\u1d62 log(p\u1d62)',
+                    'sinh(x) = (e\u02e3 - e^\u207bx)/2',
+                    '\u222e E dA = Q/\u03b5\u2080',
+                    '\u03c3 = (x-\u03bc)\u00b2/n',
+                    'eⁱ\u03c0 + 1 = 0'
+                ];
+
+                const GOLD = (a) => 'rgba(192,160,96,' + a + ')';
+                const CREAM = (a) => 'rgba(220,200,160,' + a + ')';
+                const BLUE = (a) => 'rgba(140,180,220,' + a + ')';
+                const rand = (a, b) => a + Math.random() * (b - a);
+                const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+                function buildScene() {
+                    pts = [];
+                    objs = [];
+                    var isMobile = window.innerWidth < 768;
+                    var PARTICLE_COUNT = isMobile ? 50 : 90;
+                    var SYMBOL_COUNT = isMobile ? 28 : 55;
+                    var FORMULA_COUNT = isMobile ? 14 : 30;
+                    var ORBIT_COUNT = isMobile ? 3 : 6;
+
+                    for (var i = 0; i < PARTICLE_COUNT; i++) {
+                        pts.push({
+                            x: rand(0, W), y: rand(0, H), vx: rand(-0.35, 0.35), vy: rand(-0.35, 0.35),
+                            r: rand(1.0, 2.8), ph: rand(0, Math.PI * 2), spd: rand(0.01, 0.04)
+                        });
+                    }
+                    for (var i = 0; i < SYMBOL_COUNT; i++) {
+                        objs.push({
+                            type: 'sym', x: rand(0, W), y: rand(0, H), vx: rand(-0.28, 0.28), vy: rand(-0.28, 0.28),
+                            sym: pick(SYMBOLS), size: rand(13, 40), alpha: rand(0.18, 0.70),
+                            ph: rand(0, Math.PI * 2), spd: rand(0.008, 0.025),
+                            rot: rand(-0.5, 0.5), rotSpd: rand(-0.005, 0.005),
+                            col: Math.random() < 0.85 ? 'gold' : 'blue'
+                        });
+                    }
+                    for (var i = 0; i < FORMULA_COUNT; i++) {
+                        objs.push({
+                            type: 'formula', x: rand(0, W), y: rand(0, H), vx: rand(-0.18, 0.18), vy: rand(-0.18, 0.18),
+                            text: pick(FORMULAS), size: rand(10, 16), alpha: rand(0.15, 0.55),
+                            ph: rand(0, Math.PI * 2), spd: rand(0.005, 0.018)
+                        });
+                    }
+                    for (var i = 0; i < ORBIT_COUNT; i++) {
+                        objs.push({
+                            type: 'orbit', cx: rand(W * 0.05, W * 0.95), cy: rand(H * 0.05, H * 0.95),
+                            rx: rand(25, 100), ry: rand(18, 60),
+                            angle: rand(0, Math.PI * 2), spd: rand(0.003, 0.014), alpha: rand(0.06, 0.18)
+                        });
+                    }
+                }
+
+                function wrap(o) {
+                    var pad = 60;
+                    if (o.x < -pad) o.x = W + pad;
+                    if (o.x > W + pad) o.x = -pad;
+                    if (o.y < -pad) o.y = H + pad;
+                    if (o.y > H + pad) o.y = -pad;
+                }
+
+                function draw() {
+                    ctx.clearRect(0, 0, W, H);
+                    ctx.fillStyle = '#0a0a0f';
+                    ctx.fillRect(0, 0, W, H);
+
+                    var grd = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W * 0.65);
+                    grd.addColorStop(0, 'rgba(192,160,96,0.045)');
+                    grd.addColorStop(1, 'rgba(0,0,0,0)');
+                    ctx.fillStyle = grd;
+                    ctx.fillRect(0, 0, W, H);
+
+                    for (var i = 0; i < pts.length; i++) {
+                        var p = pts[i];
+                        p.x += p.vx; p.y += p.vy; p.ph += p.spd;
+                        if (p.x < 0 || p.x > W) p.vx *= -1;
+                        if (p.y < 0 || p.y > H) p.vy *= -1;
+                    }
+
+                    var CD = 110;
+                    for (var i = 0; i < pts.length; i++) {
+                        for (var j = i + 1; j < pts.length; j++) {
+                            var dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+                            var d = Math.sqrt(dx * dx + dy * dy);
+                            if (d < CD) {
+                                ctx.strokeStyle = GOLD(0.22 * (1 - d / CD));
+                                ctx.lineWidth = 0.5;
+                                ctx.beginPath();
+                                ctx.moveTo(pts[i].x, pts[i].y);
+                                ctx.lineTo(pts[j].x, pts[j].y);
+                                ctx.stroke();
+                            }
+                        }
+                    }
+
+                    for (var i = 0; i < pts.length; i++) {
+                        var p = pts[i];
+                        ctx.fillStyle = GOLD(0.4 + 0.55 * Math.sin(p.ph));
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    for (var i = 0; i < objs.length; i++) {
+                        var o = objs[i];
+                        if (o.type === 'sym') {
+                            o.x += o.vx; o.y += o.vy; o.ph += o.spd; o.rot += o.rotSpd;
+                            wrap(o);
+                            var a = o.alpha * (0.55 + 0.45 * Math.sin(o.ph));
+                            ctx.save();
+                            ctx.translate(o.x, o.y);
+                            ctx.rotate(o.rot);
+                            ctx.fillStyle = o.col === 'gold' ? GOLD(a) : BLUE(a);
+                            ctx.font = o.size + "px Georgia,'Times New Roman',serif";
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillText(o.sym, 0, 0);
+                            ctx.restore();
+                        } else if (o.type === 'formula') {
+                            o.x += o.vx; o.y += o.vy; o.ph += o.spd;
+                            wrap(o);
+                            var a = o.alpha * (0.5 + 0.5 * Math.sin(o.ph));
+                            ctx.fillStyle = CREAM(a);
+                            ctx.font = o.size + "px 'Courier New',Courier,monospace";
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillText(o.text, o.x, o.y);
+                        } else if (o.type === 'orbit') {
+                            o.angle += o.spd;
+                            ctx.strokeStyle = GOLD(o.alpha);
+                            ctx.lineWidth = 0.75;
+                            ctx.beginPath();
+                            ctx.ellipse(o.cx, o.cy, o.rx, o.ry, o.angle * 0.25, 0, Math.PI * 2);
+                            ctx.stroke();
+                            var px = o.cx + o.rx * Math.cos(o.angle);
+                            var py = o.cy + o.ry * Math.sin(o.angle);
+                            ctx.fillStyle = GOLD(0.6);
+                            ctx.beginPath();
+                            ctx.arc(px, py, 2.2, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    }
+                    raf = requestAnimationFrame(draw);
+                }
+
+                function resize() {
+                    W = cv.width = window.innerWidth;
+                    H = cv.height = window.innerHeight;
+                    if (raf) cancelAnimationFrame(raf);
+                    buildScene();
+                    raf = requestAnimationFrame(draw);
+                }
+                window.addEventListener('resize', resize);
+
+                // Defer canvas start until preloader is gone — improves first-paint
+                const preloaderEl = document.getElementById('preloader');
+                if (preloaderEl) {
+                    // Poll cheaply until preloader is hidden (takes ~1.6s)
+                    const waitForPreloader = setInterval(() => {
+                        if (preloaderEl.classList.contains('hidden') ||
+                            getComputedStyle(preloaderEl).display === 'none' ||
+                            preloaderEl.style.display === 'none') {
+                            clearInterval(waitForPreloader);
+                            resize();
+                        }
+                    }, 100);
+                    // Hard fallback after 3s so canvas always starts
+                    setTimeout(() => { clearInterval(waitForPreloader); if (!raf) resize(); }, 3000);
+                } else {
+                    resize();
+                }
+            })();
+        </script>
+</body>
+
+</html>

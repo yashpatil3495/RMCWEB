@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="RMC Admin Panel - Manage events and participants">
+    <link rel="icon" type="image/png" href="img/logo.png">
+    <title>RMC Admin Panel</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="video-bg">
+        <canvas id="mathBg"></canvas>
+    </div>
+
+    <!-- ========== LOGIN SCREEN ========== -->
+    <div class="login-wrapper" id="loginScreen">
+        <div class="login-card">
+            <img src="img/logo.png" alt="RMC Logo" class="login-logo">
+            <h1>RMC ADMIN</h1>
+            <p class="login-subtitle">Authorized Access Only</p>
+
+            <div id="loginForm">
+                <div class="login-field">
+                    <label>Username</label>
+                    <input type="text" id="loginUser" placeholder="Enter username" autocomplete="off">
+                </div>
+                <div class="login-field">
+                    <label>Password</label>
+                    <input type="password" id="loginPass" placeholder="Enter password">
+                </div>
+                <button class="login-btn" id="loginBtn" onclick="attemptLogin()">SIGN IN</button>
+                <div class="login-error" id="loginError"></div>
+                <div class="login-divider"><span>or</span></div>
+                <button class="login-signup-link" onclick="toggleSignupForm()">Request Admin Access</button>
+            </div>
+
+            <!-- Sign-up form -->
+            <div id="signupForm" style="display:none;">
+                <div class="login-field">
+                    <label>Full Name *</label>
+                    <input type="text" id="signupName" placeholder="Your full name" autocomplete="name">
+                </div>
+                <div class="login-field">
+                    <label>Email *</label>
+                    <input type="email" id="signupEmail" placeholder="your@email.com" autocomplete="email">
+                </div>
+                <div class="login-field">
+                    <label>Password *</label>
+                    <input type="password" id="signupPass" placeholder="Choose a password">
+                </div>
+                <div class="login-field">
+                    <label>Reason for Access</label>
+                    <input type="text" id="signupReason" placeholder="e.g. Club Representative">
+                </div>
+                <button class="login-btn" onclick="submitAdminSignup()">SUBMIT REQUEST</button>
+                <button class="login-signup-link" onclick="toggleSignupForm()" style="margin-top:8px;">&#8592; Back to Login</button>
+                <div class="login-error" id="signupError"></div>
+                <div class="signup-success" id="signupSuccess" style="display:none;">
+                    <i class='bx bx-check-circle'></i> Request submitted! You will be notified once approved.
+                </div>
+            </div>
+
+            <!-- Shown when locked out -->
+            <div class="login-lockout" id="lockoutMsg" style="display:none;">
+                <i class='bx bx-lock'></i> Account locked. Reload the page to try again.
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== DASHBOARD ========== -->
+    <div class="dashboard" id="dashboard">
+
+        <!-- ---- Header ---- -->
+        <div class="dash-header">
+            <div class="dash-brand">
+                <img src="img/logo.png" alt="RMC">
+                <div>
+                    <h2>RMC ADMIN</h2>
+                    <span>Dashboard Panel</span>
+                </div>
+            </div>
+            <div class="dash-header-right">
+                <div class="dash-user">
+                    <i class='bx bx-user-circle'></i>
+                    <span id="dashUserName">rmc_admin</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class='bx bx-log-out'></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- ---- Tabs ---- -->
+        <div class="dash-tabs">
+            <button class="dash-tab active" data-tab="stats" onclick="switchTab('stats')">
+                <i class='bx bx-bar-chart-alt-2'></i> Dashboard
+            </button>
+            <button class="dash-tab" data-tab="events" data-restricted="super" onclick="switchTab('events')">
+                <i class='bx bx-calendar-event'></i> Events
+            </button>
+            <button class="dash-tab" data-tab="registrations" onclick="switchTab('registrations')">
+                <i class='bx bx-receipt'></i> Registrations <span class="tab-badge" id="regBadge" style="display:none;"></span>
+            </button>
+            <button class="dash-tab" data-tab="csv" onclick="switchTab('csv')">
+                <i class='bx bx-spreadsheet'></i> Participants
+            </button>
+            <button class="dash-tab" data-tab="cert" data-restricted="super" onclick="switchTab('cert')">
+                <i class='bx bx-certification'></i> Certificate
+            </button>
+            <button class="dash-tab" data-tab="tickets" onclick="switchTab('tickets')">
+                <i class='bx bx-barcode'></i> Tickets <span class="tab-badge" id="ticketBadge" style="display:none;"></span>
+            </button>
+            <button class="dash-tab" data-tab="members" data-restricted="super" onclick="switchTab('members')">
+                <i class='bx bx-group'></i> Members
+            </button>
+            <button class="dash-tab" data-tab="adminusers" data-restricted="super" onclick="switchTab('adminusers')" id="adminUsersTab">
+                <i class='bx bx-shield-quarter'></i> Admin Users <span class="tab-badge" id="adminBadge" style="display:none;"></span>
+            </button>
+            <button class="dash-tab" data-tab="testimonials" data-restricted="super" onclick="switchTab('testimonials')">
+                <i class='bx bx-comment-dots'></i> Testimonials
+            </button>
+            <button class="dash-tab" data-tab="announce" data-restricted="super" onclick="switchTab('announce')">
+                <i class='bx bx-bell'></i> Announcements
+            </button>
+        </div>
+
+        <!-- ---- Content ---- -->
+        <div class="dash-content">
+
+            <!-- ===== TAB A: EVENTS MANAGER ===== -->
+            <div class="tab-panel" id="panel-events">
+
+                <!-- Event Form -->
+                <div class="panel-card">
+                    <h3><i class='bx bx-edit'></i> <span id="formTitle">CREATE NEW EVENT</span></h3>
+                    <form id="eventForm" onsubmit="saveEvent(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Event Name *</label>
+                                <input type="text" id="evName" required placeholder="e.g. Math Olympiad 2026">
+                            </div>
+                            <div class="form-group">
+                                <label>Event Date *</label>
+                                <input type="date" id="evDate" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Description *</label>
+                                <textarea id="evDesc" required placeholder="Brief description of the event..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Registration Link (Google Form URL)</label>
+                                <input type="url" id="evLink" placeholder="https://forms.google.com/...">
+                            </div>
+                            <div class="form-group">
+                                <label>Registration Deadline</label>
+                                <input type="date" id="evDeadline">
+                            </div>
+                            <div class="form-group">
+                                <label>Max Participants</label>
+                                <input type="number" id="evMaxPart" min="0" placeholder="e.g. 100">
+                            </div>
+                            <div class="form-group">
+                                <label>Status *</label>
+                                <select id="evStatus" required>
+                                    <option value="Registration Open">Registration Open</option>
+                                    <option value="Registration Closed">Registration Closed</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label><i class='bx bx-image-add'></i> Event Poster / Banner (Optional)</label>
+                                <div class="photo-upload-zone" id="evPosterDropZone" onclick="document.getElementById('evPosterFileInput').click()">
+                                    <i class='bx bx-image-add'></i>
+                                    <p>Drag & drop a poster here, or <span>browse</span></p>
+                                    <input type="file" id="evPosterFileInput" accept="image/*" style="display:none" onchange="handleEventPosterSelect(this)">
+                                </div>
+                                <div id="evPosterPreview" style="display:none; margin-top:12px; text-align:center;">
+                                    <img id="evPosterPreviewImg" alt="Poster Preview" style="max-width:100%; max-height:220px; border-radius:8px; border:1px solid #c9a84c; object-fit:cover;">
+                                    <div style="margin-top:8px; display:flex; gap:8px; justify-content:center; align-items:center;">
+                                        <span id="evPosterFileName" style="font-size:12px; color:#888;"></span>
+                                        <button type="button" class="btn-danger" style="padding:4px 12px; font-size:12px;" onclick="removeEventPoster()">Remove</button>
+                                    </div>
+                                </div>
+                                <!-- Hidden field to store the uploaded poster URL (set after upload) -->
+                                <input type="hidden" id="evPoster" value="">
+                            </div>
+                            <div class="form-group">
+                                <label><i class='bx bx-time'></i> Event Date & Time</label>
+                                <input type="datetime-local" id="evDateTime">
+                                <small style="color:#888;font-size:11px;">Used for the live countdown timer on the website</small>
+                            </div>
+                            <div class="form-group">
+                                <label><i class='bx bx-link'></i> Tag / Category</label>
+                                <input type="text" id="evTag" placeholder="e.g. Technical, Workshop">
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-gold" id="saveEventBtn">
+                                <i class='bx bx-plus'></i> Save Event
+                            </button>
+                            <button type="button" class="btn-secondary" id="cancelEditBtn" style="display:none;" onclick="cancelEdit()">
+                                Cancel Edit
+                            </button>
+                        </div>
+                        <!-- Hidden field to track edit mode -->
+                        <input type="hidden" id="editingEventId" value="">
+                    </form>
+                </div>
+
+                <!-- Events List -->
+                <div class="panel-card">
+                    <h3><i class='bx bx-list-ul'></i> SAVED EVENTS</h3>
+                    <div class="events-table-wrap">
+                        <table class="admin-table" id="eventsTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Deadline</th>
+                                    <th>Max</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="eventsTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="noEventsMsg" style="display:none;">
+                        <i class='bx bx-calendar-x'></i>
+                        <p>No events created yet. Use the form above to add one.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB: REGISTRATIONS ===== -->
+            <div class="tab-panel" id="panel-registrations">
+                <div class="panel-card">
+                    <h3><i class='bx bx-filter'></i> FILTER BY EVENT</h3>
+                    <div class="form-group" style="max-width:400px;">
+                        <label>Choose Event</label>
+                        <select id="regEventSelect" onchange="loadRegistrations()">
+                            <option value="">-- Select an Event --</option>
+                        </select>
+                    </div>
+                    <div class="reg-filter-row" style="margin-top:12px;">
+                        <button class="filter-btn active" data-filter="all" onclick="filterRegistrations('all', this)">All</button>
+                        <button class="filter-btn" data-filter="pending" onclick="filterRegistrations('pending', this)">Pending</button>
+                        <button class="filter-btn" data-filter="accepted" onclick="filterRegistrations('accepted', this)">Accepted</button>
+                        <button class="filter-btn" data-filter="rejected" onclick="filterRegistrations('rejected', this)">Rejected</button>
+                    </div>
+                    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+                        <button class="btn-gold" onclick="openManualEntryModal()">
+                            <i class='bx bx-plus'></i> Add Manual Entry
+                        </button>
+                        <button class="btn-secondary" onclick="openGoogleFormImport()">
+                            <i class='bx bx-import'></i> Import from Google Form CSV
+                        </button>
+                        <button class="btn-secondary" onclick="bulkIssueCertificates()" data-restricted="super">
+                            <i class='bx bx-certification'></i> Issue Certificates to All Accepted
+                        </button>
+                    </div>
+                </div>
+
+                <div class="panel-card" id="regDataPanel" style="display:none;">
+                    <h3><i class='bx bx-list-check'></i> REGISTRATIONS <span id="regCount" class="header-count"></span></h3>
+                    <div class="events-table-wrap">
+                        <table class="admin-table" id="regTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>RBT</th>
+                                    <th>Dept</th>
+                                    <th>Year</th>
+                                    <th>Event</th>
+                                    <th>Entry Type</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="regTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="noRegsMsg" style="display:none;">
+                        <i class='bx bx-inbox'></i>
+                        <p>No registrations found for this event.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB B: CSV UPLOAD & PARTICIPANT VIEWER ===== -->
+            <div class="tab-panel" id="panel-csv">
+
+                <!-- Event selector -->
+                <div class="panel-card">
+                    <h3><i class='bx bx-select-multiple'></i> SELECT EVENT</h3>
+                    <div class="form-group" style="max-width:400px;">
+                        <label>Choose Event</label>
+                        <select id="csvEventSelect" onchange="loadParticipantData()">
+                            <option value="">-- Select an Event --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- CSV Upload -->
+                <div class="panel-card">
+                    <h3><i class='bx bx-cloud-upload'></i> UPLOAD CSV</h3>
+                    <div class="csv-upload-zone" id="csvDropZone">
+                        <i class='bx bx-file'></i>
+                        <p>Drag & drop a <strong>.csv</strong> file here, or <span>browse</span></p>
+                        <input type="file" id="csvFileInput" accept=".csv" onchange="handleCSVUpload(this)">
+                    </div>
+                    <div class="form-actions" style="margin-top:12px;">
+                        <button class="btn-secondary" onclick="downloadTemplateCSV()">
+                            <i class='bx bx-download'></i> Download Template CSV
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CSV Preview (shown after file upload) -->
+                <div class="panel-card" id="csvPreviewPanel" style="display:none;">
+                    <h3><i class='bx bx-show'></i> CSV PREVIEW <span id="csvPreviewCount" class="header-count"></span></h3>
+                    <div class="csv-table-wrap" style="max-height:300px;">
+                        <table class="csv-table" id="csvPreviewTable">
+                            <thead id="csvPreviewHead"></thead>
+                            <tbody id="csvPreviewBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn-gold" onclick="importCSVToFirebase()">
+                            <i class='bx bx-cloud-upload'></i> Import to Database
+                        </button>
+                        <button class="btn-secondary" onclick="cancelCSVPreview()">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CSV Data Display -->
+                <div class="panel-card" id="csvDataPanel" style="display:none;">
+                    <h3><i class='bx bx-table'></i> PARTICIPANT DATA</h3>
+
+                    <div class="csv-summary" id="csvSummary"></div>
+
+                    <div class="csv-table-wrap">
+                        <table class="csv-table" id="csvTable">
+                            <thead id="csvTableHead"></thead>
+                            <tbody id="csvTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="csv-actions">
+                        <button class="btn-gold" onclick="exportJSON()">
+                            <i class='bx bx-download'></i> Export as JSON
+                        </button>
+                        <button class="btn-danger" onclick="confirmClearParticipants()">
+                            <i class='bx bx-trash'></i> Clear Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB C: STATS / DASHBOARD ===== -->
+            <div class="tab-panel active" id="panel-stats">
+                <div class="stats-grid" id="statsCards"></div>
+
+                <div class="panel-card">
+                    <h3><i class='bx bx-bar-chart'></i> PER-EVENT BREAKDOWN</h3>
+                    <div class="events-table-wrap">
+                        <table class="breakdown-table" id="breakdownTable">
+                            <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Participants</th>
+                                    <th>Upload Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="breakdownBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="noStatsMsg" style="display:none;">
+                        <i class='bx bx-bar-chart-square'></i>
+                        <p>No participant data uploaded yet. Upload CSVs in the Participants tab.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB: TESTIMONIALS ===== -->
+            <div class="tab-panel" id="panel-testimonials">
+                <div class="panel-card">
+                    <h3><i class='bx bx-comment-add'></i> <span id="testiFormTitle">ADD TESTIMONIAL</span></h3>
+                    <div class="form-grid">
+                        <input type="hidden" id="testiEditId">
+                        <div class="form-group full-width">
+                            <label>Member Feedback *</label>
+                            <textarea id="testiText" rows="3" maxlength="400" placeholder="What the member said about RMC..." oninput="updateTestiCharCount()"></textarea>
+                            <div class="char-counter"><span id="testiCharCount">0</span> / 400</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" id="testiName" placeholder="e.g. Arjun Sharma">
+                        </div>
+                        <div class="form-group">
+                            <label>Year & Branch *</label>
+                            <input type="text" id="testiRole" placeholder="e.g. 3rd Year — Computer Engineering">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn-gold" onclick="saveTestimonial()"><i class='bx bx-save'></i> <span id="testiBtnLabel">Add Testimonial</span></button>
+                        <button class="btn-secondary" onclick="resetTestiForm()" style="margin-left:10px;"><i class='bx bx-x'></i> Clear</button>
+                    </div>
+                </div>
+
+                <div class="panel-card" style="margin-top:24px;">
+                    <h3><i class='bx bx-list-ul'></i> EXISTING TESTIMONIALS</h3>
+                    <div class="events-table-wrap">
+                        <table class="admin-table" id="testiTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Feedback</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="testiTableBody">
+                                <tr><td colspan="5" style="text-align:center;opacity:0.5;">No testimonials yet.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB D: ANNOUNCEMENTS ===== -->
+            <div class="tab-panel" id="panel-announce">
+                <div class="panel-card">
+                    <h3><i class='bx bx-bell'></i> ANNOUNCEMENT BANNER</h3>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Banner Message *</label>
+                            <textarea id="annMsg" maxlength="200" rows="3" placeholder="Type your announcement..." oninput="updateAnnCharCount(); updateAnnPreview();"></textarea>
+                            <div class="char-counter"><span id="annCharCount">0</span> / 200</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Banner Background Color</label>
+                            <div class="color-presets" id="annColorPresets">
+                                <button type="button" class="color-swatch active" data-color="#c9a84c" style="background:#c9a84c" onclick="selectAnnColor('#c9a84c',this)" title="Gold"></button>
+                                <button type="button" class="color-swatch" data-color="#c0392b" style="background:#c0392b" onclick="selectAnnColor('#c0392b',this)" title="Red"></button>
+                                <button type="button" class="color-swatch" data-color="#1a6fa8" style="background:#1a6fa8" onclick="selectAnnColor('#1a6fa8',this)" title="Blue"></button>
+                                <button type="button" class="color-swatch" data-color="#1e8449" style="background:#1e8449" onclick="selectAnnColor('#1e8449',this)" title="Green"></button>
+                                <input type="color" id="annCustomColor" value="#c9a84c" class="custom-color-input" onchange="selectAnnColor(this.value,null)" title="Custom color">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Text Color</label>
+                            <input type="color" id="annTextColor" value="#000000" class="color-input-block" onchange="updateAnnPreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Scrolling Text (Marquee)</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="annScrolling" checked onchange="updateAnnPreview()">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label" id="annScrollLabel">ON</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Banner Active</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="annActive" checked onchange="updateAnnPreview()">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label" id="annActiveLabel">ON</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Live Preview -->
+                    <div style="margin-top:24px;">
+                        <label class="form-group" style="gap:0;"><label style="font-size:10px;letter-spacing:3px;color:rgba(201,168,76,0.6);font-family:'Cinzel',serif;text-transform:uppercase;margin-bottom:10px;">Live Preview</label></label>
+                        <div id="annPreviewBox" class="ann-preview-box">
+                            <span id="annPreviewText">Your announcement will appear here...</span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn-gold" onclick="saveAnnouncement()"><i class='bx bx-save'></i> Save Banner</button>
+                        <button class="btn-danger" onclick="clearAnnouncement()"><i class='bx bx-trash'></i> Clear Banner</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB E: MEMBER MANAGEMENT ===== -->
+            <div class="tab-panel" id="panel-members">
+                <div class="panel-card">
+                    <h3><i class='bx bx-user-plus'></i> <span id="memberFormTitle">ADD NEW MEMBER</span></h3>
+                    <form id="memberForm" onsubmit="saveMember(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Full Name *</label>
+                                <input type="text" id="memName" required placeholder="e.g. Arush Padmawar">
+                            </div>
+                            <div class="form-group">
+                                <label>Role *</label>
+                                <input type="text" id="memRole" required placeholder="e.g. Club Head">
+                            </div>
+                            <div class="form-group">
+                                <label>Member Type *</label>
+                                <select id="memType" required onchange="toggleYearField()">
+                                    <option value="">-- Select --</option>
+                                    <option value="Core Committee">Core Committee (Student)</option>
+                                    <option value="General Member">General Member (Student)</option>
+                                    <option value="Founding Member">Founding Member</option>
+                                    <option value="Faculty Advisor">Faculty Advisor (Teacher)</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="yearFieldGroup">
+                                <label for="memYear">Year <span id="yearRequired" style="color: #c9a84c;">*</span></label>
+                                <select id="memYear">
+                                    <option value="">-- Select --</option>
+                                    <option>First Year</option>
+                                    <option>Second Year</option>
+                                    <option>Third Year</option>
+                                    <option>Fourth Year</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Department</label>
+                                <input type="text" id="memDept" placeholder="e.g. Computer Engineering">
+                            </div>
+                            <div class="form-group">
+                                <label for="memQualification">Qualification <span id="qualRequired"></span></label>
+                                <input type="text" id="memQualification" placeholder="e.g. BSc., M.Sc., Ph.D (Mathematics)">
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Upload Photo</label>
+                                <div class="photo-upload-zone" id="memPhotoDropZone">
+                                    <i class='bx bx-image-add'></i>
+                                    <p>Drag & drop a photo here, or <span>browse</span></p>
+                                    <input type="file" id="memPhotoFileInput" accept="image/*" onchange="handleMemberPhotoUpload(this)">
+                                </div>
+                                <div id="photoPreview" style="display:none; margin-top:12px; text-align:center;">
+                                    <img id="photoPreviewImg" alt="Preview" style="max-width:200px; max-height:200px; border-radius:8px; border:1px solid #c9a84c;">
+                                    <button type="button" class="btn-danger" style="margin-top:8px; width:100%;" onclick="removeMemberPhoto()">Remove Photo</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>LinkedIn URL (optional)</label>
+                                <input type="url" id="memLinkedin" placeholder="https://linkedin.com/in/...">
+                            </div>
+                            <div class="form-group">
+                                <label>Email (optional)</label>
+                                <input type="email" id="memEmail" placeholder="name@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Joining Year</label>
+                                <input type="number" id="memJoinYear" min="2000" max="2100" placeholder="e.g. 2024">
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select id="memStatus">
+                                    <option value="Active">Active</option>
+                                    <option value="Alumni">Alumni</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-gold" id="saveMemberBtn"><i class='bx bx-plus'></i> Add Member</button>
+                            <button type="button" class="btn-secondary" id="cancelMemberEditBtn" style="display:none;" onclick="cancelMemberEdit()">Cancel Edit</button>
+                        </div>
+                        <input type="hidden" id="editingMemberId" value="">
+                        <input type="hidden" id="memPhotoData" value="">
+                    </form>
+                </div>
+
+                <div class="panel-card">
+                    <h3><i class='bx bx-list-ul'></i> ALL MEMBERS</h3>
+                    <div class="form-actions" style="margin-top:0;margin-bottom:20px;">
+                        <button class="btn-secondary" onclick="exportMembersJSON()"><i class='bx bx-download'></i> Export JSON</button>
+                        <label class="btn-secondary" style="cursor:pointer;"><i class='bx bx-upload'></i> Import JSON <input type="file" accept=".json" style="display:none;" onchange="importMembersJSON(this)"></label>
+                    </div>
+                    <div class="events-table-wrap">
+                        <table class="admin-table" id="membersTable">
+                            <thead>
+                                <tr>
+                                    <th>Photo</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Qualification</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="membersTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="noMembersMsg" style="display:none;">
+                        <i class='bx bx-user-x'></i>
+                        <p>No members added yet. Use the form above to add one.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB F: CERTIFICATE PREVIEW ===== -->
+            <div class="tab-panel" id="panel-cert">
+                <div class="panel-card">
+                    <h3><i class='bx bx-image-add'></i> CERTIFICATE TEMPLATE</h3>
+                    <div class="csv-upload-zone" id="certDropZone">
+                        <i class='bx bx-image'></i>
+                        <p>Upload a certificate template (<strong>PNG/JPG</strong>), or <span>browse</span></p>
+                        <input type="file" id="certFileInput" accept="image/png,image/jpeg" onchange="handleCertUpload(this)">
+                    </div>
+                    <button class="btn-danger" onclick="clearCertTemplate()" style="margin-top:8px;"><i class='bx bx-trash'></i> Clear Template</button>
+                </div>
+
+                <div class="panel-card">
+                    <h3><i class='bx bx-text'></i> TEXT OVERLAY SETTINGS</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Sample Name</label>
+                            <input type="text" id="certSampleName" value="Sample Participant" oninput="renderCertPreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Font</label>
+                            <select id="certFont" onchange="renderCertPreview()">
+                                <option value="Cinzel">Cinzel</option>
+                                <option value="Raleway">Raleway</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Arial">Arial</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Font Size: <strong id="certFontSizeVal">36</strong>px</label>
+                            <input type="range" id="certFontSize" min="16" max="72" value="36" oninput="document.getElementById('certFontSizeVal').textContent=this.value; renderCertPreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Font Color</label>
+                            <input type="color" id="certFontColor" value="#000000" class="color-input-block" onchange="renderCertPreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>X Position: <strong id="certXVal">50</strong>%</label>
+                            <input type="range" id="certXPos" min="0" max="100" value="50" oninput="document.getElementById('certXVal').textContent=this.value; renderCertPreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Y Position: <strong id="certYVal">70</strong>%</label>
+                            <input type="range" id="certYPos" min="0" max="100" value="70" oninput="document.getElementById('certYVal').textContent=this.value; renderCertPreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Bold</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="certBold" onchange="renderCertPreview()">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">OFF</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Italic</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="certItalic" onchange="renderCertPreview()">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">OFF</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-card">
+                    <h3><i class='bx bx-show'></i> LIVE PREVIEW</h3>
+                    <div class="cert-canvas-wrap">
+                        <canvas id="certCanvas" width="800" height="566"></canvas>
+                    </div>
+                    <p class="cert-note"><i class='bx bx-info-circle'></i> This configuration will be used as a reference for the Python certificate generation script. Export the config using the button below.</p>
+                    <div class="form-actions">
+                        <button class="btn-gold" onclick="saveCertConfig()"><i class='bx bx-save'></i> Save Configuration</button>
+                        <button class="btn-secondary" onclick="downloadCertPreview()"><i class='bx bx-download'></i> Download Preview</button>
+                        <button class="btn-secondary" onclick="exportCertConfig()"><i class='bx bx-export'></i> Export Config JSON</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB: TICKETS ===== -->
+            <div class="tab-panel" id="panel-tickets">
+                <div class="panel-card">
+                    <h3><i class='bx bx-barcode'></i> TICKET MANAGEMENT</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Search Tickets</label>
+                            <input type="text" id="ticketSearchInput" placeholder="Search by name, ticket ID, or event..." oninput="filterTickets()">
+                        </div>
+                    </div>
+                    <div class="events-table-wrap" style="margin-top:16px;">
+                        <table class="admin-table" id="ticketsTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Ticket ID</th>
+                                    <th>Student Name</th>
+                                    <th>Event</th>
+                                    <th>RBT</th>
+                                    <th>Generated</th>
+                                    <th>Valid</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ticketsTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="noTicketsMsg" style="display:none;">
+                        <i class='bx bx-barcode'></i>
+                        <p>No tickets generated yet.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB: ISSUE CERTIFICATES ===== -->
+            <!-- Appended after the existing cert template/preview tab -->
+
+            <!-- ===== TAB: ADMIN USERS (super admin only) ===== -->
+            <div class="tab-panel" id="panel-adminusers">
+                <div class="panel-card">
+                    <h3><i class='bx bx-shield-quarter'></i> ADMIN ACCESS REQUESTS</h3>
+                    <div class="events-table-wrap">
+                        <table class="admin-table" id="adminRequestsTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Reason</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminRequestsBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="noAdminReqsMsg" style="display:none;">
+                        <i class='bx bx-user-check'></i>
+                        <p>No admin access requests.</p>
+                    </div>
+                </div>
+
+                <div class="panel-card">
+                    <h3><i class='bx bx-user-check'></i> APPROVED ADMINS</h3>
+                    <div class="events-table-wrap">
+                        <table class="admin-table" id="approvedAdminsTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Approved On</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="approvedAdminsBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="noApprovedMsg" style="display:none;">
+                        <i class='bx bx-group'></i>
+                        <p>No approved admin representatives yet.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ========== MANUAL ENTRY MODAL ========== -->
+    <div class="modal-overlay" id="manualEntryModal">
+        <div class="modal-box" style="max-width:560px;text-align:left;">
+            <h4 style="text-align:center;">✏️ ADD MANUAL REGISTRATION</h4>
+            <form id="manualEntryForm" onsubmit="submitManualEntry(event)" style="margin-top:20px;">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Select Event *</label>
+                        <select id="meEventSelect" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="meName" required placeholder="Student name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="meEmail" required placeholder="student@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Mobile Number *</label>
+                        <input type="tel" id="meMobile" required placeholder="10-digit mobile" pattern="[0-9]{10}" maxlength="10">
+                    </div>
+                    <div class="form-group">
+                        <label>RBT Number *</label>
+                        <input type="text" id="meRbt" required placeholder="RBT number">
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <input type="text" id="meDept" placeholder="e.g. Computer Engineering">
+                    </div>
+                    <div class="form-group">
+                        <label>Year</label>
+                        <select id="meYear">
+                            <option value="">-- Select --</option>
+                            <option>First Year</option>
+                            <option>Second Year</option>
+                            <option>Third Year</option>
+                            <option>Fourth Year</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Group Size</label>
+                        <input type="number" id="meGroupSize" min="1" max="20" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="meStatus">
+                            <option value="pending">Pending</option>
+                            <option value="accepted">Accepted</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Notes (optional)</label>
+                        <textarea id="meNotes" rows="2" placeholder="Any additional notes..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-actions" style="margin-top:20px;">
+                    <button type="button" class="btn-secondary" onclick="closeManualEntryModal()">Cancel</button>
+                    <button type="submit" class="btn-gold"><i class='bx bx-save'></i> Save Entry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========== VIEW DETAILS MODAL ========== -->
+    <div class="modal-overlay" id="viewDetailModal">
+        <div class="modal-box" style="max-width:560px;text-align:left;">
+            <h4 style="text-align:center;">👁️ REGISTRATION DETAILS</h4>
+            <div id="viewDetailContent" style="margin-top:16px;"></div>
+            <div class="modal-actions" style="margin-top:20px;">
+                <button class="btn-secondary" onclick="closeViewDetailModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== CONFIRM MODAL ========== -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-box" style="max-width:560px;">
+            <h4 id="modalTitle">Confirm</h4>
+            <p id="modalMessage">Are you sure?</p>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn-danger" id="modalConfirmBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== TOAST ========== -->
+    <div class="toast" id="toast"></div>
+
+
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getDatabase, ref, set, get, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC5JKcHWc9N7OcH57vFVxF5gBHxKfsgjSw",
+            authDomain: "rmcwebsite10.firebaseapp.com",
+            databaseURL: "https://rmcwebsite10-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "rmcwebsite10",
+            storageBucket: "rmcwebsite10.firebasestorage.app",
+            messagingSenderId: "731012572422",
+            appId: "1:731012572422:web:f1cc2692e7236f600daa87"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const storage = getStorage(app);
+        window._firebaseDB = db;
+        window._firebaseRef = ref;
+        window._firebaseSet = set;
+        window._firebaseGet = get;
+        window._firebaseRemove = remove;
+        window._firebaseOnValue = onValue;
+        window._firebaseStorage = storage;
+        window._firebaseStorageRef = storageRef;
+        window._firebaseUploadBytes = uploadBytes;
+        window._firebaseGetDownloadURL = getDownloadURL;
+        // Firebase Auth — used by admin.js for super-admin login
+        const auth = getAuth(app);
+        window._firebaseAuth = auth;
+        window._firebaseSignIn = signInWithEmailAndPassword;
+        window._firebaseSignOut = signOut;
+        window._firebaseReady = true;
+        window.dispatchEvent(new Event('firebaseReady'));
+    </script>
+    <script src="js/firebase-db.js"></script>
+    <script src="js/email-service.js"></script>
+    <script src="js/admin.js"></script>
+<script>
+(function() {
+    const cv  = document.getElementById('mathBg');
+    if (!cv) return;
+    const ctx = cv.getContext('2d');
+    let W, H, pts = [], objs = [], raf;
+
+    const SYMBOLS = [
+        '\u03b1','\u03b2','\u03b3','\u03b4','\u03b5','\u03b6','\u03b7','\u03b8','\u03ba','\u03bb',
+        '\u03bc','\u03bd','\u03be','\u03c0','\u03c1','\u03c3','\u03c4','\u03c5','\u03c6','\u03c7',
+        '\u03c8','\u03c9','\u0393','\u0394','\u039b','\u03a3','\u03a6','\u03a8','\u03a9','\u03a0',
+        '\u222b','\u222c','\u222d','\u222e','\u2202','\u2207','\u2211','\u220f','\u221e','\u2248',
+        '\u2243','\u224d','\u2261','\u2260','\u2264','\u2265','\u226a','\u226b','\u221d','\u2118',
+        '\u2200','\u2203','\u2204','\u2208','\u2209','\u2286','\u2287','\u2282','\u2283','\u2229',
+        '\u222a','\u2295','\u2297','\u2299','\u22a5','\u2234','\u2235','\u221a','\u221b','\u221c',
+        '\u2220','\u22be','\u27c2','\u2245','\u223c','\u00b1','\u00d7','\u00f7'
+    ];
+
+    const FORMULAS = [
+        'E = mc\u00b2','a\u00b2 + b\u00b2 = c\u00b2','F = ma','PV = nRT',
+        '\u222bf(x)dx','d/dx(e\u02e3) = e\u02e3','d/dx(sin x) = cos x',
+        '\u2202\u00b2u / \u2202t\u00b2','lim(x\u21920) sin(x)/x = 1',
+        '\u2211n = n(n+1)/2','\u2211n\u00b2 = n(n+1)(2n+1)/6',
+        '\u2211(1/n\u00b2) = \u03c0\u00b2/6',
+        'sin\u00b2\u03b8 + cos\u00b2\u03b8 = 1','cos(2\u03b8) = 1 - 2sin\u00b2\u03b8',
+        'tan\u03b8 = sin\u03b8 / cos\u03b8','e^(i\u03b8) = cos\u03b8 + i sin\u03b8',
+        'sin(A+B) = sinA cosB + cosA sinB',
+        'P(A|B) = P(B|A)P(A)/P(B)','E[X] = x P(X=x)',
+        'Var(X) = E[X\u00b2] - (E[X])\u00b2',
+        'det(A) = ad - bc','Ax = \u03bbx','tr(A) = a\u1d62\u1d62',
+        '\u0393(n+1) = n!','\u03b6(s) = (1/n\u02e2)',
+        'a \u2261 b (mod n)',
+        'F = Gm\u2081m\u2082/r\u00b2','V = \u03c0r\u00b2h','A = 4\u03c0r\u00b2',
+        '\u2207\u00b2\u03c6 = 0','c\u00b2 = a\u00b2 + b\u00b2 - 2ab cosC',
+        'z = re^(i\u03b8)','i\u00b2 = j\u00b2 = k\u00b2 = -1',
+        'x\u2099\u208a\u2081 = rx\u2099(1 - x\u2099)',
+        'H = -p\u1d62 log(p\u1d62)',
+        'sinh(x) = (e\u02e3 - e^\u207bx)/2',
+        '\u222e E dA = Q/\u03b5\u2080',
+        '\u03c3 = (x-\u03bc)\u00b2/n',
+        'eⁱ\u03c0 + 1 = 0'
+    ];
+
+    const GOLD  = (a) => 'rgba(192,160,96,' + a + ')';
+    const CREAM = (a) => 'rgba(220,200,160,' + a + ')';
+    const BLUE  = (a) => 'rgba(140,180,220,' + a + ')';
+    const rand  = (a, b) => a + Math.random() * (b - a);
+    const pick  = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+    function buildScene() {
+        pts  = [];
+        objs = [];
+        var isMobile       = window.innerWidth < 768;
+        var PARTICLE_COUNT = isMobile ? 50  : 90;
+        var SYMBOL_COUNT   = isMobile ? 28  : 55;
+        var FORMULA_COUNT  = isMobile ? 14  : 30;
+        var ORBIT_COUNT    = isMobile ? 3   : 6;
+
+        for (var i = 0; i < PARTICLE_COUNT; i++) {
+            pts.push({ x:rand(0,W), y:rand(0,H), vx:rand(-0.35,0.35), vy:rand(-0.35,0.35),
+                       r:rand(1.0,2.8), ph:rand(0,Math.PI*2), spd:rand(0.01,0.04) });
+        }
+        for (var i = 0; i < SYMBOL_COUNT; i++) {
+            objs.push({ type:'sym', x:rand(0,W), y:rand(0,H), vx:rand(-0.28,0.28), vy:rand(-0.28,0.28),
+                        sym:pick(SYMBOLS), size:rand(13,40), alpha:rand(0.18,0.70),
+                        ph:rand(0,Math.PI*2), spd:rand(0.008,0.025),
+                        rot:rand(-0.5,0.5), rotSpd:rand(-0.005,0.005),
+                        col: Math.random() < 0.85 ? 'gold' : 'blue' });
+        }
+        for (var i = 0; i < FORMULA_COUNT; i++) {
+            objs.push({ type:'formula', x:rand(0,W), y:rand(0,H), vx:rand(-0.18,0.18), vy:rand(-0.18,0.18),
+                        text:pick(FORMULAS), size:rand(10,16), alpha:rand(0.15,0.55),
+                        ph:rand(0,Math.PI*2), spd:rand(0.005,0.018) });
+        }
+        for (var i = 0; i < ORBIT_COUNT; i++) {
+            objs.push({ type:'orbit', cx:rand(W*0.05,W*0.95), cy:rand(H*0.05,H*0.95),
+                        rx:rand(25,100), ry:rand(18,60),
+                        angle:rand(0,Math.PI*2), spd:rand(0.003,0.014), alpha:rand(0.06,0.18) });
+        }
+    }
+
+    function wrap(o) {
+        var pad = 60;
+        if (o.x < -pad)    o.x = W + pad;
+        if (o.x > W + pad) o.x = -pad;
+        if (o.y < -pad)    o.y = H + pad;
+        if (o.y > H + pad) o.y = -pad;
+    }
+
+    function draw() {
+        ctx.clearRect(0,0,W,H);
+        ctx.fillStyle = '#0a0a0f';
+        ctx.fillRect(0,0,W,H);
+
+        var grd = ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,W*0.65);
+        grd.addColorStop(0,'rgba(192,160,96,0.045)');
+        grd.addColorStop(1,'rgba(0,0,0,0)');
+        ctx.fillStyle = grd;
+        ctx.fillRect(0,0,W,H);
+
+        for (var i = 0; i < pts.length; i++) {
+            var p = pts[i];
+            p.x += p.vx; p.y += p.vy; p.ph += p.spd;
+            if (p.x < 0 || p.x > W) p.vx *= -1;
+            if (p.y < 0 || p.y > H) p.vy *= -1;
+        }
+
+        var CD = 110;
+        for (var i = 0; i < pts.length; i++) {
+            for (var j = i+1; j < pts.length; j++) {
+                var dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+                var d  = Math.sqrt(dx*dx + dy*dy);
+                if (d < CD) {
+                    ctx.strokeStyle = GOLD(0.22*(1-d/CD));
+                    ctx.lineWidth   = 0.5;
+                    ctx.beginPath();
+                    ctx.moveTo(pts[i].x, pts[i].y);
+                    ctx.lineTo(pts[j].x, pts[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        for (var i = 0; i < pts.length; i++) {
+            var p = pts[i];
+            ctx.fillStyle = GOLD(0.4 + 0.55*Math.sin(p.ph));
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+            ctx.fill();
+        }
+
+        for (var i = 0; i < objs.length; i++) {
+            var o = objs[i];
+            if (o.type === 'sym') {
+                o.x += o.vx; o.y += o.vy; o.ph += o.spd; o.rot += o.rotSpd;
+                wrap(o);
+                var a = o.alpha*(0.55+0.45*Math.sin(o.ph));
+                ctx.save();
+                ctx.translate(o.x, o.y);
+                ctx.rotate(o.rot);
+                ctx.fillStyle    = o.col === 'gold' ? GOLD(a) : BLUE(a);
+                ctx.font         = o.size + "px Georgia,'Times New Roman',serif";
+                ctx.textAlign    = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(o.sym, 0, 0);
+                ctx.restore();
+            } else if (o.type === 'formula') {
+                o.x += o.vx; o.y += o.vy; o.ph += o.spd;
+                wrap(o);
+                var a = o.alpha*(0.5+0.5*Math.sin(o.ph));
+                ctx.fillStyle    = CREAM(a);
+                ctx.font         = o.size + "px 'Courier New',Courier,monospace";
+                ctx.textAlign    = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(o.text, o.x, o.y);
+            } else if (o.type === 'orbit') {
+                o.angle += o.spd;
+                ctx.strokeStyle = GOLD(o.alpha);
+                ctx.lineWidth   = 0.75;
+                ctx.beginPath();
+                ctx.ellipse(o.cx, o.cy, o.rx, o.ry, o.angle*0.25, 0, Math.PI*2);
+                ctx.stroke();
+                var px = o.cx + o.rx*Math.cos(o.angle);
+                var py = o.cy + o.ry*Math.sin(o.angle);
+                ctx.fillStyle = GOLD(0.6);
+                ctx.beginPath();
+                ctx.arc(px, py, 2.2, 0, Math.PI*2);
+                ctx.fill();
+            }
+        }
+        raf = requestAnimationFrame(draw);
+    }
+
+    function resize() {
+        W = cv.width  = window.innerWidth;
+        H = cv.height = window.innerHeight;
+        if (raf) cancelAnimationFrame(raf);
+        buildScene();
+        raf = requestAnimationFrame(draw);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+})();
+</script>
+</body>
+</html>

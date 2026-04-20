@@ -1,0 +1,388 @@
+/* =============================================
+   RMC REGISTRATION PAGE — Premium Styles
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #000;
+    color: #fff;
+    font-family: 'Raleway', Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+/* ===== VIDEO BACKGROUND ===== */
+.video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background: #0a0a0f;
+}
+
+.video-bg canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* ===== MAIN SECTION ===== */
+.register-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+}
+
+/* ===== CARD ===== */
+.register-card {
+    width: 100%;
+    max-width: 680px;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 24px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 40px;
+    animation: cardGlow 3s infinite alternate;
+}
+
+@keyframes cardGlow {
+    from { box-shadow: 0 0 12px rgba(212, 175, 55, 0.2); }
+    to   { box-shadow: 0 0 30px rgba(212, 175, 55, 0.5); }
+}
+
+/* ===== HEADER ===== */
+.register-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.register-logo {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.4));
+    animation: logoPulse 2.5s ease infinite;
+}
+
+@keyframes logoPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+}
+
+.register-header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 26px;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, #FFD700, #d4af37, #FFD700);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: shimmer 3s infinite linear;
+    margin-bottom: 6px;
+}
+
+@keyframes shimmer {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.register-subtitle {
+    font-size: 12px;
+    color: rgba(255, 215, 0, 0.5);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+/* ===== FORM ===== */
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(212, 175, 55, 0.7);
+    font-family: 'Cinzel', serif;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.form-group label i {
+    font-size: 14px;
+    color: #d4af37;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 14px;
+    font-family: 'Raleway', sans-serif;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.form-group select option {
+    background: #111;
+    color: #fff;
+}
+
+/* Event Info Badge */
+.event-info {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+
+.event-info span {
+    font-size: 11px;
+    color: rgba(212, 175, 55, 0.8);
+    background: rgba(212, 175, 55, 0.08);
+    padding: 4px 10px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.event-info span i {
+    font-size: 13px;
+}
+
+/* ===== BUTTONS ===== */
+.form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.reg-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 50px;
+    border: 1px solid #d4af37;
+    color: #d4af37;
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(0, 0, 0, 0.6);
+    text-align: center;
+}
+
+.reg-btn.primary {
+    background: linear-gradient(135deg, #d4af37, #c99a2e);
+    color: #000;
+    border-color: #d4af37;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+}
+
+.reg-btn.primary:hover {
+    box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
+    transform: translateY(-2px);
+}
+
+.reg-btn.primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.reg-btn.secondary:hover {
+    background: rgba(212, 175, 55, 0.1);
+}
+
+/* ===== SUCCESS STATE ===== */
+.register-success {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.success-icon {
+    font-size: 64px;
+    color: #4CAF50;
+    margin-bottom: 16px;
+    animation: successPop 0.5s ease;
+}
+
+@keyframes successPop {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.register-success h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    color: #d4af37;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.register-success p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.7;
+    margin-bottom: 24px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.success-details {
+    background: rgba(212, 175, 55, 0.06);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 13px;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-row span {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.detail-row strong {
+    color: #d4af37;
+}
+
+.status-pending {
+    color: #FFA726 !important;
+}
+
+/* ===== TOAST ===== */
+.reg-toast {
+    position: fixed;
+    bottom: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    color: #d4af37;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: 'Raleway', sans-serif;
+    z-index: 9999;
+    transition: bottom 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.reg-toast.show {
+    bottom: 30px;
+}
+
+.reg-toast.error {
+    border-color: rgba(244, 67, 54, 0.5);
+    color: #ef5350;
+}
+
+.reg-toast.success {
+    border-color: rgba(76, 175, 80, 0.5);
+    color: #66bb6a;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+    .register-card {
+        padding: 30px 16px;
+        border-radius: 18px;
+        margin: 20px 16px;
+    }
+
+    .register-header h1 {
+        font-size: 20px;
+        letter-spacing: 2px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .form-group input,
+    .form-group select {
+        padding: 11px 12px;
+        font-size: 13px;
+    }
+
+    .reg-btn {
+        padding: 12px 20px;
+        font-size: 12px;
+        width: 100%;
+    }
+}
+/* Live status pulse animation */
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(1.25); }
+}

@@ -1,0 +1,76 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "rmc_events": {
+      ".read": true,
+      ".write": "auth != null && (root.child('rmc_super_admins').child(auth.uid).exists() || root.child('rmc_approved_admins_uid').child(auth.uid).exists())"
+    },
+
+    "rmc_registrations": {
+      ".read": "auth != null",
+      "$eventKey": {
+        ".write": true,
+        "$regId": {
+          ".write": "auth != null || !data.exists()"
+        }
+      }
+    },
+
+    "rmc_tickets": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+
+    "rmc_certificates": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+
+    "rmc_members": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+
+    "rmc_testimonials": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+
+    "rmc_announcement": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+
+    "rmc_cert_template": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+
+    "rmc_cert_config": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+
+    "rmc_participants": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+
+    "rmc_approved_admins": {
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('rmc_super_admins').child(auth.uid).exists()"
+    },
+
+    "rmc_admin_requests": {
+      ".read": "auth != null",
+      ".write": true
+    },
+
+    "rmc_super_admins": {
+      ".read": "auth != null",
+      ".write": false
+    }
+  }
+}
